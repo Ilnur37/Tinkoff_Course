@@ -33,10 +33,10 @@ public class Task3 {
         LOGGER.info("First array[]: " + Arrays.toString(arr1));
         LOGGER.info("Second array[]: " + Arrays.toString(arr2));
         if (arr2.length < 2) {
-            throw new NumberFormatException("The length of the second array must be greater than 2!");
+            throw new IllegalArgumentException("The length of the second array must be greater than 2!");
         }
         if (arr1.length == 0) {
-            throw new NumberFormatException("The length of the first array must be greater than 0!");
+            throw new IllegalArgumentException("The length of the first array must be greater than 0!");
         }
 
         int max1 = findMaxElement(arr1);

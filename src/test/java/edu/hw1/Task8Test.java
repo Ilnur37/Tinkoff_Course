@@ -45,6 +45,24 @@ public class Task8Test {
     }
 
     @Test
+    @DisplayName("Доска имеет размер не 8*8")
+    void countK_whenRuntimeExceptionSizeOfBoard() {
+        int[][] board = new int[][] {
+            {1, 0, 1, 0, 1, 0, 1, 0},
+            {0, 1, 0, 1, 0, 1, 0, 1},
+            {0, 0, 0, 0, 1, 0, 1, 0},
+            {0, 0, 1, 0, 0, 1, 0, 1},
+            {1, 0, 0, 0, 1, 0, 1, 0}
+        };
+
+        RuntimeException thrown = Assertions.assertThrows(RuntimeException.class, () -> {
+            Task8.knightBoardCapture(board);
+        }, "Board size is valid");
+
+        Assertions.assertEquals("The board should be 8*8 in size!", thrown.getMessage());
+    }
+
+    @Test
     @DisplayName("Есть число не равное 0 или 1")
     void countK_whenRuntimeExceptionLess0() {
         int[][] board = new int[][] {

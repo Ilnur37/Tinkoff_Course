@@ -78,7 +78,7 @@ public class Task3Test {
         int[] arr1 = new int[] {};
         int[] arr2 = new int[] {0, 6};
 
-        NumberFormatException thrown = Assertions.assertThrows(NumberFormatException.class, () -> {
+        IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> {
             Task3.isNestable(arr1, arr2);
         }, "There is not 0 element in Array1");
 
@@ -91,7 +91,7 @@ public class Task3Test {
         int[] arr1 = new int[] {1, 2, 3, 6};
         int[] arr2 = new int[] {0};
 
-        NumberFormatException thrown = Assertions.assertThrows(NumberFormatException.class, () -> {
+        IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> {
             Task3.isNestable(arr1, arr2);
         }, "There is not 1 element in Array2");
 
