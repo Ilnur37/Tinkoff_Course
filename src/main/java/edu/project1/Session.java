@@ -8,6 +8,8 @@ import java.util.Objects;
 import java.util.Set;
 
 public class Session {
+    private static final String CLOSE_SESSION_WHEN_LENGTH_ANSWER_LESS_MIN_LEN = "-1";
+    private static final String CLOSE_SESSION_CODE_TO_EXIT_THE_GAME = "END";
 
     private final String answer;
     private final int maxAttempts;
@@ -16,10 +18,14 @@ public class Session {
     private int attempts;
 
     public Session(DifficultyLevel difficultyLevel) {
-        this.answer = difficultyLevel.randomWord();
+        String ans = difficultyLevel.randomWord();
+        if (shouldCloseSession(ans)) {
+            closeSession();
+        }
+        this.answer = ans;
         this.maxAttempts = difficultyLevel.maxAttempt();
         this.attempts = 0;
-        differentLettersInAnswerAdd(answer);
+        differentLettersInAnswerAdd(this.answer);
     }
 
     //Constructor for tests
@@ -35,6 +41,15 @@ public class Session {
         this.differentLettersInAnswer = differentLettersInAnswer;
         this.userAnswers = userAnswers;
         this.attempts = attempts;
+    }
+
+    public static boolean shouldCloseSession(String str) {
+        return str.equals(CLOSE_SESSION_WHEN_LENGTH_ANSWER_LESS_MIN_LEN)
+            || str.equals(CLOSE_SESSION_CODE_TO_EXIT_THE_GAME);
+    }
+
+    public static void closeSession() {
+        System.exit(-1);
     }
 
     private void differentLettersInAnswerAdd(String string) {

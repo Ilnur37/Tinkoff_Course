@@ -41,7 +41,9 @@ public class Console {
             LOGGER.info("Попытка " + session.getAttempts() + " из " + session.getMaxAttempts());
             LOGGER.info("Введите букву: ");
             String inputStr = in.nextLine();
-            exitGame(inputStr);
+            if (Session.shouldCloseSession(inputStr)) {
+                Session.closeSession();
+            }
             endGame = guessResult(session, inputStr);
         }
     }
@@ -64,19 +66,15 @@ public class Console {
     }
 
     public boolean validDifficulty(String difficulty) {
-        exitGame(difficulty);
+        if (Session.shouldCloseSession(difficulty)) {
+            Session.closeSession();
+        }
         for (int i = MIN_DIFFICULTY; i <= MAX_DIFFICULTY; i++) {
             if (Integer.toString(i).equals(difficulty)) {
                 return true;
             }
         }
         return false;
-    }
-
-    private void exitGame(String exit) {
-        if (exit.equals("END")) {
-            System.exit(1);
-        }
     }
 
     public boolean guessResult(Session session, String inputStr) {

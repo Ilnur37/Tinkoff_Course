@@ -12,10 +12,16 @@ public class EasyLevel implements DifficultyLevel {
     @Override
     public @NotNull String randomWord() {
         List<String> dictionary = new ArrayList<>(Arrays.asList(
-            "стол", "стул", "вода", "носки", "кино", "лист", "окно",
-            "клей", "кот", "собака", "шкаф", "вещь", "мама", "школа", "сон"
+            "в", "аа", "у"
         ));
-        int idx = (int) (Math.random() * dictionary.size());
+        int firstIdx = (int) (Math.random() * dictionary.size());
+        int idx = firstIdx;
+        while (dictionary.get(idx).length() < MIN_LENGTH) {
+            idx = (idx + 1) % dictionary.size();
+            if (idx == firstIdx) {
+                return "-1";
+            }
+        }
         return dictionary.get(idx);
     }
 

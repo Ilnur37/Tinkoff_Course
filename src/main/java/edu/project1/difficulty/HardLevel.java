@@ -14,7 +14,14 @@ public class HardLevel implements DifficultyLevel {
             "полиморфизм", "инкапсуляция", "антропогенный", "макроэкономика",
             "гуманитарный", "паралелепипед", "тиргонометрия", "синусоинда", "биссектрисса"
         ));
-        int idx = (int) (Math.random() * dictionary.size());
+        int firstIdx = (int) (Math.random() * dictionary.size());
+        int idx = firstIdx;
+        while (dictionary.get(idx).length() < MIN_LENGTH) {
+            idx = (idx + 1) % dictionary.size();
+            if (idx == firstIdx) {
+                return "-1";
+            }
+        }
         return dictionary.get(idx);
     }
 
