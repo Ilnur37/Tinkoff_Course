@@ -90,4 +90,9 @@ public class Session {
             && userAnswers.equals(o.userAnswers)
             && attempts == o.attempts;
     }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }
