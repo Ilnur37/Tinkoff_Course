@@ -1,9 +1,9 @@
 package edu.project1.UserResult;
 
 import edu.project1.AnswerResult;
-import edu.project1.Session;
+import edu.project1.session.Session;
 
 public sealed interface UserResult permits EndGame, InvalidAnswer, LetterGuessed {
 
-    AnswerResult responseProcessing(Session session, String inputAnswer);
+    AnswerResult processResponse(Session session, String inputAnswer);
 }

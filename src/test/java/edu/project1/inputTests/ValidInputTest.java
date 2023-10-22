@@ -1,7 +1,8 @@
 package edu.project1.inputTests;
 
 import edu.project1.Console;
-import edu.project1.Session;
+import edu.project1.session.Session;
+import edu.project1.session.SessionManager;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -27,14 +28,12 @@ public class ValidInputTest {
     @DisplayName("Выбор уровня сложности(корректные данные)")
     @ValueSource(strings = {"1", "2", "3"})
     void validDifficulty(String word) {
-        Console console = new Console();
-        assertTrue(console.validDifficulty(word));
+        assertTrue(SessionManager.isValidDifficultyLevel(word));
     }
 
     @Test
     @DisplayName("Угадывание буквы(попал)")
     void responseProcessing_whenHit() {
-        Console console = new Console();
         String answer = "т";
         Set<Character> differentLettersInAnswer1 = new HashSet<>(List.of('с', 'о', 'л'));
         Session session = new Session(
@@ -45,14 +44,13 @@ public class ValidInputTest {
             1
         );
 
-        console.guessResult(changedSession, answer);
+        SessionManager.guessResult(changedSession, answer);
         assertEquals(session, changedSession);
     }
 
     @Test
     @DisplayName("Угадывание буквы(не попал)")
     void responseProcessing_whenNotHit() {
-        Console console = new Console();
         String answer = "я";
         Set<Character> differentLettersInAnswer1 = new HashSet<>(List.of('с', 'т', 'о', 'л'));
         Session session = new Session(
@@ -63,30 +61,26 @@ public class ValidInputTest {
             1
         );
 
-        console.guessResult(changedSession, answer);
+        SessionManager.guessResult(changedSession, answer);
         assertEquals(session, changedSession);
     }
 
     @DisplayName("Угадывание буквы(победа)")
     @Test
     void responseProcessing_whenWin() {
-        Console console = new Console();
-
-        console.guessResult(changedSession, "с");
-        console.guessResult(changedSession, "т");
-        console.guessResult(changedSession, "о");
-        assertTrue(console.guessResult(changedSession, "л"));
+        SessionManager.guessResult(changedSession, "с");
+        SessionManager.guessResult(changedSession, "т");
+        SessionManager.guessResult(changedSession, "о");
+        assertTrue(SessionManager.guessResult(changedSession, "л"));
     }
 
     @DisplayName("Угадывание буквы(поражение)")
     @Test
     void responseProcessing_whenDefeat() {
-        Console console = new Console();
-
-        console.guessResult(changedSession, "а");
-        console.guessResult(changedSession, "б");
-        console.guessResult(changedSession, "ы");
-        console.guessResult(changedSession, "с");
-        assertTrue(console.guessResult(changedSession, "л"));
+        SessionManager.guessResult(changedSession, "а");
+        SessionManager.guessResult(changedSession, "б");
+        SessionManager.guessResult(changedSession, "ы");
+        SessionManager.guessResult(changedSession, "с");
+        assertTrue(SessionManager.guessResult(changedSession, "л"));
     }
 }

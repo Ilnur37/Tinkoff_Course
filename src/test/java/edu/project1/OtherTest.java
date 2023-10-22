@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import edu.project1.session.Session;
+import edu.project1.session.SessionManager;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -22,9 +25,9 @@ public class OtherTest {
             new ArrayList<>(),
             0
         );
-        console.guessResult(session, "с");
-        console.guessResult(session, "о");
+        SessionManager.guessResult(session, "с");
+        SessionManager.guessResult(session, "о");
 
-        assertEquals(needRes, console.getSecurityWord(session));
+        assertEquals(needRes, console.getMaskedWord(session));
     }
 }

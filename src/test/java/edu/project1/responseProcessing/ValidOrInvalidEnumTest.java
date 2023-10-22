@@ -2,12 +2,13 @@ package edu.project1.responseProcessing;
 
 import edu.project1.AnswerResult;
 import edu.project1.Console;
-import edu.project1.Session;
+import edu.project1.session.Session;
 import edu.project1.UserResult.InvalidAnswer;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import edu.project1.session.SessionManager;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -31,7 +32,7 @@ public class ValidOrInvalidEnumTest {
         String answer = "we";
         AnswerResult res = AnswerResult.INVALID_ANSWER_LENGTH;
 
-        assertEquals(res, invalidAnswer.responseProcessing(session, answer));
+        assertEquals(res, invalidAnswer.processResponse(session, answer));
     }
 
     @ParameterizedTest
@@ -40,17 +41,17 @@ public class ValidOrInvalidEnumTest {
     void responseProcessing_whenINVALID_ANSWER_CHAR(String answer) {
         AnswerResult res = AnswerResult.INVALID_ANSWER_CHAR;
 
-        assertEquals(res, invalidAnswer.responseProcessing(session, answer));
+        assertEquals(res, invalidAnswer.processResponse(session, answer));
     }
 
     @Test
     @DisplayName("Enum: INVALID_ANSWER_REPEAT_CHAR")
     void responseProcessing_whenINVALID_ANSWER_REPEAT_CHAR() {
-        Console console = new Console();
         String answer = "в";
         AnswerResult res = AnswerResult.INVALID_ANSWER_REPEAT_CHAR;
-        console.guessResult(session, answer);
+        SessionManager.guessResult(session, answer);
+        SessionManager.guessResult(session, answer);
 
-        assertEquals(res, invalidAnswer.responseProcessing(session, answer));
+        assertEquals(res, invalidAnswer.processResponse(session, answer));
     }
 }

@@ -1,7 +1,7 @@
 package edu.project1.responseProcessing;
 
 import edu.project1.AnswerResult;
-import edu.project1.Session;
+import edu.project1.session.Session;
 import edu.project1.UserResult.LetterGuessed;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -29,7 +29,7 @@ public class HitOrNotTest {
     void responseProcessing_whenHIT(String answer) {
         AnswerResult res = AnswerResult.HIT;
 
-        assertEquals(res, letterGuessed.responseProcessing(session, answer));
+        assertEquals(res, letterGuessed.processResponse(session, answer));
     }
 
     @ParameterizedTest
@@ -38,6 +38,6 @@ public class HitOrNotTest {
     void responseProcessing_whenNOT_HIT(String answer) {
         AnswerResult res = AnswerResult.NOT_HIT;
 
-        assertEquals(res, letterGuessed.responseProcessing(session, answer));
+        assertEquals(res, letterGuessed.processResponse(session, answer));
     }
 }
