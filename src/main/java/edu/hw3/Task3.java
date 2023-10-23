@@ -30,7 +30,7 @@ public class Task3 {
             map.put(list.get(i), map.getOrDefault(list.get(i), 0) + 1);
         }
 
-        LOGGER.info("Map: " + map.toString());
+        LOGGER.info("Map: " + map);
         return map;
     }
 }
