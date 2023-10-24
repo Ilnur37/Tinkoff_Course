@@ -10,6 +10,10 @@ public class Task5 {
     public static final String DECREASING = "DESC";
     public static final String SPLIT = " ";
 
+    private Task5() {
+
+    }
+
     public static Person[] parseContacts(String[] names, String sort) {
         LOGGER.info("Names: " + Arrays.toString(names));
         if (sort == null) {

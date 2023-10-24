@@ -1,8 +1,8 @@
 package edu.hw3.Task6;
 
+import java.util.PriorityQueue;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import java.util.PriorityQueue;
 
 public class StockMarketImpl implements StockMarket {
     private static final Logger LOGGER = LogManager.getLogger();

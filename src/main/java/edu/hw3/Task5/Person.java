@@ -2,7 +2,7 @@ package edu.hw3.Task5;
 
 import org.jetbrains.annotations.NotNull;
 
-public class Person implements Comparable<Person>{
+public class Person implements Comparable<Person> {
     private String name;
     private String surname;
 
