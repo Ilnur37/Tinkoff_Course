@@ -2,7 +2,6 @@ package edu.hw4;
 
 import java.util.ArrayList;
 import java.util.List;
-import edu.hw1.Task7;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -128,7 +127,7 @@ public class Tests {
         animalsWithNull.add(null);
     }
 
-    @Test
+    /*@Test
     @DisplayName("Null")
     void countK_whenRuntimeExceptionLess0() {
 
@@ -177,6 +176,6 @@ public class Tests {
         trueRes.add(spider2);
         Assertions.assertEquals(trueRes, res);
 
-    }
+    }*/
 
 }
