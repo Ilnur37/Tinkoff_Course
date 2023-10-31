@@ -2,8 +2,10 @@ package edu.hw4.validation;
 
 import edu.hw4.Animal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class ValidationError {
@@ -17,6 +19,24 @@ public class ValidationError {
 
     private ValidationError() {
 
+    }
+
+    public static Map<String, String> iterateThroughList(List<Animal> animals) {
+        Map<String, String> errors = new HashMap<>();
+
+        for (Animal animal : animals) {
+            Set<IllegalArgumentException> setOfErrors = validation(animal);
+            if (!setOfErrors.isEmpty()) {
+                StringBuilder exception = new StringBuilder();
+                for (IllegalArgumentException ex : setOfErrors) {
+                    exception.append(ex.getMessage()).append("\n");
+                }
+                errors.put(animal == null ? null : animal.name(), exception.toString());
+            }
+        }
+        clearUsedNames();
+
+        return errors;
     }
 
     public static Set<IllegalArgumentException> validation(Animal animal) {
@@ -132,5 +152,9 @@ public class ValidationError {
         if (animal.weight() < MIN_WEIGHT) {
             throw new IllegalArgumentException("Weight field less than maximum value" + MIN_WEIGHT + "!");
         }
+    }
+
+    private static void clearUsedNames() {
+        USED_NAMES.clear();
     }
 }

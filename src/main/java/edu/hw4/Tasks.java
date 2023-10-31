@@ -17,7 +17,7 @@ public class Tasks {
 
     /**
      * Task 1
-     * Отсортировать животных по росту от самого маленького к самому большому -> List[Animal]
+     * Отсортировать животных по росту от самого маленького к самому большому -> {@Code List<Animal>}
      *
      * @param animals список животных
      * @return список животных
@@ -31,7 +31,7 @@ public class Tasks {
 
     /**
      * Task 2
-     * Отсортировать животных по весу от самого тяжелого к самому легкому, выбрать k первых -> List[Animal]
+     * Отсортировать животных по весу от самого тяжелого к самому легкому, выбрать k первых -> {@Code List<Animal>}
      *
      * @param animals список животных
      * @param limit   первые k животных
@@ -47,7 +47,7 @@ public class Tasks {
 
     /**
      * Task 3
-     * Сколько животных каждого вида -> Map[Animal.Type, Integer]
+     * Сколько животных каждого вида -> {@Code Map<Animal.Type, Integer>}
      *
      * @param animals список животных
      * @return Map, где key - это тип животного, а value - их количество
@@ -68,7 +68,7 @@ public class Tasks {
     public static Animal findAnimalWithLongestName(List<Animal> animals) {
         validationError(animals);
         return animals.stream()
-            .max((a1, a2) -> a2.name().length() - a1.name().length()).orElseThrow();
+            .max(Comparator.comparingInt(a -> a.name().length())).orElseThrow();
     }
 
     /**
@@ -97,7 +97,7 @@ public class Tasks {
 
     /**
      * Task 6
-     * Самое тяжелое животное каждого вида -> Map[Animal.Type, Animal]
+     * Самое тяжелое животное каждого вида -> {@Code Map<Animal.Type, Animal>}
      *
      * @param animals список животных
      * @return Map, где key - это тип животного, а value - животное
@@ -136,7 +136,7 @@ public class Tasks {
 
     /**
      * Task 8
-     * K-е самое старое животное -> Animal
+     * Самое тяжелое животное среди животных ниже k см -> {@Code Optional<Animal>}
      *
      * @param animals   список животных
      * @param minHeight минимальный рост
@@ -164,7 +164,7 @@ public class Tasks {
 
     /**
      * Task 10
-     * Список животных, возраст у которых не совпадает с количеством лап -> List[Animal]
+     * Список животных, возраст у которых не совпадает с количеством лап -> {@Code List<Animal>}
      *
      * @param animals список животных
      * @return список животных
@@ -178,7 +178,8 @@ public class Tasks {
 
     /**
      * Task 11
-     * Список животных, которые могут укусить (bites == null или true) и рост которых превышает 100 см -> List[Animal]
+     * Список животных, которые могут укусить (bites == null или true)
+     * и рост которых превышает 100 см -> {@Code List<Animal>}
      *
      * @param animals список животных
      * @return список животных
@@ -208,7 +209,7 @@ public class Tasks {
 
     /**
      * Task 13
-     * Список животных, имена которых состоят из более чем двух слов -> List[Animal]
+     * Список животных, имена которых состоят из более чем двух слов -> {@Code List<Animal>}
      *
      * @param animals список животных
      * @return список животных
@@ -256,7 +257,7 @@ public class Tasks {
 
     /**
      * Task 16
-     * Список животных, отсортированный по виду, затем по полу, затем по имени -> List[Integer]
+     * Список животных, отсортированный по виду, затем по полу, затем по имени -> {@Code List<Integer>}
      *
      * @param animals список животных
      * @return список животных
@@ -313,8 +314,15 @@ public class Tasks {
             .orElse(null);
     }
 
+    /**
+     * Task 20
+     * Сделать результат предыдущего задания более читабельным:
+     * вернуть имя и названия полей с ошибками, объединенные в строку -> {@Code Map<String, String>}
+     *
+     * @param animals список животных
+     */
     private static void validationError(List<Animal> animals) {
-        Map<String, String> errors = task20(animals);
+        Map<String, String> errors = ValidationError.iterateThroughList(animals);
         if (!errors.isEmpty()) {
             StringBuilder stringBuilder = new StringBuilder("\n");
             for (Map.Entry<String, String> entry : errors.entrySet()) {
@@ -327,7 +335,8 @@ public class Tasks {
 
     /**
      * Task 19
-     * Животные, в записях о которых есть ошибки: вернуть имя и список ошибок -> Map[String, Set[ValidationError]].
+     * Животные, в записях о которых есть ошибки:
+     * вернуть имя и список ошибок -> {@Code Map<String, Set<ValidationError>>}
      * Класс ValidationError и набор потенциальных проверок нужно придумать самостоятельно.
      *
      * @param animals список животных
@@ -340,30 +349,6 @@ public class Tasks {
             Set<IllegalArgumentException> setOfErrors = ValidationError.validation(animal);
             if (!setOfErrors.isEmpty()) {
                 errors.put(animal == null ? null : animal.name(), setOfErrors);
-            }
-        }
-        return errors;
-    }
-
-    /**
-     * Task 19
-     * Сделать результат предыдущего задания более читабельным:
-     * вернуть имя и названия полей с ошибками, объединенные в строку -> Map[String, String]
-     *
-     * @param animals список животных
-     * @return Map, где key - это имя животного, а value - строка ошибок
-     */
-    public static Map<String, String> task20(List<Animal> animals) {
-        Map<String, String> errors = new HashMap<>();
-
-        for (Animal animal : animals) {
-            Set<IllegalArgumentException> setOfErrors = ValidationError.validation(animal);
-            if (!setOfErrors.isEmpty()) {
-                StringBuilder stringBuilder = new StringBuilder();
-                for (IllegalArgumentException ex : setOfErrors) {
-                    stringBuilder.append(ex).append("\n");
-                }
-                errors.put(animal == null ? null : animal.name(), stringBuilder.toString());
             }
         }
         return errors;
