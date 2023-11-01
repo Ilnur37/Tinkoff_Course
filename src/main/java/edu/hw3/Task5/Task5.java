@@ -23,7 +23,7 @@ public class Task5 {
         int length = names.length;
         Person[] persons = new Person[length];
         for (int i = 0; i < names.length; i++) {
-            validatingName(names[i]);
+            validateName(names[i]);
             persons[i] = new Person(names[i]);
         }
 
@@ -37,7 +37,7 @@ public class Task5 {
         return persons;
     }
 
-    private static void validatingName(String fullName) {
+    private static void validateName(String fullName) {
         if (fullName == null) {
             throw new IllegalArgumentException("First name last name cannot be null!");
         }
