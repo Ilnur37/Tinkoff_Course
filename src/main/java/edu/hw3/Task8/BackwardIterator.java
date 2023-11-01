@@ -2,28 +2,29 @@ package edu.hw3.Task8;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class BackwardIterator<T> implements Iterator<T> {
     private int index;
-    private final Collection<T> collection;
+    private final T[] elements;
 
     public BackwardIterator(Collection<T> collection) {
-        this.index = collection.size();
-        this.collection = collection;
+        this.elements = (T[]) collection.toArray();
+        this.index = elements.length - 1;
     }
 
     @Override
     public boolean hasNext() {
-        return index != 0;
+        return index >= 0;
     }
 
     @Override
     public T next() {
-        --index;
-        Iterator<T> iterator = collection.iterator();
-        for (int i = 0; i < index; i++) {
-            iterator.next();
+        if (!hasNext()) {
+            throw new NoSuchElementException();
         }
-        return iterator.next();
+        T item = elements[index];
+        --index;
+        return item;
     }
 }

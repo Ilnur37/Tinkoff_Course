@@ -45,7 +45,7 @@ public class Task2Test {
     void clusteringBrackets_whenStrIsEmpty() {
         String str = "";
 
-        List<String> trueRes = new ArrayList<>(List.of(""));
+        List<String> trueRes = new ArrayList<>();
 
         assertThat(Task2.clusteringBrackets(str)).isEqualTo(trueRes);
     }
@@ -55,7 +55,7 @@ public class Task2Test {
     @DisplayName("Null строка")
     void clusteringBrackets_whenStrIsNull(String str) {
 
-        NullPointerException thrown = Assertions.assertThrows(NullPointerException.class, () -> {
+        IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> {
             Task2.clusteringBrackets(str);
         }, "String is not null");
 

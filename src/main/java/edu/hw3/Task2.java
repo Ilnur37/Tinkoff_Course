@@ -15,11 +15,11 @@ public class Task2 {
     public static List<String> clusteringBrackets(String str) {
         LOGGER.info("String is: " + str);
         if (str == null) {
-            throw new NullPointerException("String is can not be null!");
+            throw new IllegalArgumentException("String is can not be null!");
         }
         int length = str.length();
         if (length == 0) {
-            return new ArrayList<>(List.of(""));
+            return new ArrayList<>();
         }
         if (length % 2 != 0) {
             throw new IllegalArgumentException("Invalid length of string!");

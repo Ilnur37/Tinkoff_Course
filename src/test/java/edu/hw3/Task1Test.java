@@ -13,7 +13,7 @@ public class Task1Test {
     void atbashCipher1() {
         String str = "Hello world!";
 
-        String result = Task1.atbashCipher(str);
+        String result = Task1.applyAtbashCipher(str);
 
         assertThat(result).isEqualTo("Svool dliow!");
     }
@@ -25,7 +25,7 @@ public class Task1Test {
             "Any fool can write code that a computer can understand. Good programmers write" +
                 " code that humans can understand. ― Martin Fowler";
 
-        String result = Task1.atbashCipher(str);
+        String result = Task1.applyAtbashCipher(str);
 
         assertThat(result).isEqualTo(
             "Zmb ullo xzm dirgv xlwv gszg z xlnkfgvi xzm fmwvihgzmw. " +
@@ -37,7 +37,7 @@ public class Task1Test {
     void atbashCipher_whenStrLenIs0() {
         String str = "";
 
-        String result = Task1.atbashCipher(str);
+        String result = Task1.applyAtbashCipher(str);
 
         assertThat(result).isEqualTo("");
     }
@@ -47,8 +47,8 @@ public class Task1Test {
     @DisplayName("Null строка")
     void atbashCipher_whenStrIsNull(String str) {
 
-        NullPointerException thrown = Assertions.assertThrows(NullPointerException.class, () -> {
-            Task1.atbashCipher(str);
+        IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            Task1.applyAtbashCipher(str);
         }, "String is not null");
 
         Assertions.assertEquals("String is can not be null!", thrown.getMessage());

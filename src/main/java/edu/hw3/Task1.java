@@ -5,19 +5,19 @@ import org.apache.logging.log4j.Logger;
 
 public class Task1 {
     private static final Logger LOGGER = LogManager.getLogger();
-    public static final int START_OF_ALPHABET_IN_UPPER = 65;
-    public static final int END_OF_ALPHABET_IN_UPPER = 90;
-    public static final int START_OF_ALPHABET_IN_LOWER = 97;
-    public static final int END_OF_ALPHABET_IN_LOWER = 122;
+    private static final int START_OF_ALPHABET_IN_UPPER = 65;
+    private static final int END_OF_ALPHABET_IN_UPPER = 90;
+    private static final int START_OF_ALPHABET_IN_LOWER = 97;
+    private static final int END_OF_ALPHABET_IN_LOWER = 122;
 
     private Task1() {
 
     }
 
-    public static String atbashCipher(String str) {
+    public static String applyAtbashCipher(String str) {
         LOGGER.info("String is: " + str);
         if (str == null) {
-            throw new NullPointerException("String is can not be null!");
+            throw new IllegalArgumentException("String is can not be null!");
         }
         StringBuilder result = new StringBuilder();
         for (char ch : str.toCharArray()) {

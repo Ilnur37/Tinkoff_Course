@@ -3,16 +3,17 @@ package edu.hw3.Task5;
 import org.jetbrains.annotations.NotNull;
 
 public class Person implements Comparable<Person> {
-    private String name;
+    public static final String SPLIT = " ";
+    private final String name;
     private String surname;
 
-    public Person(String name) {
-        this.name = name;
-    }
+    public Person(String fullName) {
+        String[] nameAndSurname = fullName.split(SPLIT);
 
-    public Person(String name, String surname) {
-        this.name = name;
-        this.surname = surname;
+        this.name = nameAndSurname[0];
+        if (nameAndSurname.length == 2) {
+            this.surname = nameAndSurname[1];
+        }
     }
 
     public String getName() {
@@ -23,9 +24,15 @@ public class Person implements Comparable<Person> {
         return surname;
     }
 
+    @Override public String toString() {
+        return "Person{"
+            + "name='" + name + '\''
+            + ", surname='" + surname + '\'' + '}';
+    }
+
     @Override
     public int compareTo(@NotNull Person p) {
-        if (this.surname == null || p.surname == null) {
+        if (this.getSurname() == null || p.getSurname() == null) {
             return this.getName().compareToIgnoreCase(p.getName());
         }
         if (this.getSurname().equals(p.getSurname())) {

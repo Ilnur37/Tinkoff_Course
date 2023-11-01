@@ -1,6 +1,7 @@
 package edu.hw3;
 
 import edu.hw3.Task5.Person;
+import edu.hw3.Task5.SortingOrder;
 import edu.hw3.Task5.Task5;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -13,12 +14,12 @@ public class Task5Test {
         String[] names = new String[] {"John Locke", "Thomas Aquinas", "David Hume", "Rene Descartes"};
         Person[] persons = new Person[names.length];
 
-        persons[0] = new Person("Thomas", "Aquinas");
-        persons[1] = new Person("Rene", "Descartes");
-        persons[2] = new Person("David", "Hume");
-        persons[3] = new Person("John", "Locke");
+        persons[0] = new Person("Thomas Aquinas");
+        persons[1] = new Person("Rene Descartes");
+        persons[2] = new Person("David Hume");
+        persons[3] = new Person("John Locke");
 
-        Person[] result = Task5.parseContacts(names, "ASC");
+        Person[] result = Task5.parseContacts(names, SortingOrder.ASC);
         for (int i = 0; i < names.length; i++) {
             Assertions.assertEquals(persons[i].getName(), result[i].getName());
             Assertions.assertEquals(persons[i].getSurname(), result[i].getSurname());
@@ -31,12 +32,12 @@ public class Task5Test {
         String[] names = new String[] {"John Locke", "Thomas Aquinas", "David Hume", "Rene Descartes"};
         Person[] persons = new Person[names.length];
 
-        persons[3] = new Person("Thomas", "Aquinas");
-        persons[2] = new Person("Rene", "Descartes");
-        persons[1] = new Person("David", "Hume");
-        persons[0] = new Person("John", "Locke");
+        persons[3] = new Person("Thomas Aquinas");
+        persons[2] = new Person("Rene Descartes");
+        persons[1] = new Person("David Hume");
+        persons[0] = new Person("John Locke");
 
-        Person[] result = Task5.parseContacts(names, "DESC");
+        Person[] result = Task5.parseContacts(names, SortingOrder.DESC);
         for (int i = 0; i < names.length; i++) {
             Assertions.assertEquals(persons[i].getName(), result[i].getName());
             Assertions.assertEquals(persons[i].getSurname(), result[i].getSurname());
@@ -49,11 +50,11 @@ public class Task5Test {
         String[] names = new String[] {"Paul Erdos", "Leonhard Euler", "Carl Gauss"};
         Person[] persons = new Person[names.length];
 
-        persons[0] = new Person("Carl", "Gauss");
-        persons[1] = new Person("Leonhard", "Euler");
-        persons[2] = new Person("Paul", "Erdos");
+        persons[0] = new Person("Carl Gauss");
+        persons[1] = new Person("Leonhard Euler");
+        persons[2] = new Person("Paul Erdos");
 
-        Person[] result = Task5.parseContacts(names, "DESC");
+        Person[] result = Task5.parseContacts(names, SortingOrder.DESC);
         for (int i = 0; i < names.length; i++) {
             Assertions.assertEquals(persons[i].getName(), result[i].getName());
             Assertions.assertEquals(persons[i].getSurname(), result[i].getSurname());
@@ -66,11 +67,11 @@ public class Task5Test {
         String[] names = new String[] {"Paul Erdos", "Leonhard Euler", "Carl Gauss"};
         Person[] persons = new Person[names.length];
 
-        persons[2] = new Person("Carl", "Gauss");
-        persons[1] = new Person("Leonhard", "Euler");
-        persons[0] = new Person("Paul", "Erdos");
+        persons[2] = new Person("Carl Gauss");
+        persons[1] = new Person("Leonhard Euler");
+        persons[0] = new Person("Paul Erdos");
 
-        Person[] result = Task5.parseContacts(names, "ASC");
+        Person[] result = Task5.parseContacts(names, SortingOrder.ASC);
         for (int i = 0; i < names.length; i++) {
             Assertions.assertEquals(persons[i].getName(), result[i].getName());
             Assertions.assertEquals(persons[i].getSurname(), result[i].getSurname());
@@ -83,11 +84,11 @@ public class Task5Test {
         String[] names = new String[] {"Paul Erdos", "Leonhard Euler", "Carl Erdos"};
         Person[] persons = new Person[names.length];
 
-        persons[0] = new Person("Carl", "Erdos");
-        persons[1] = new Person("Paul", "Erdos");
-        persons[2] = new Person("Leonhard", "Euler");
+        persons[0] = new Person("Carl Erdos");
+        persons[1] = new Person("Paul Erdos");
+        persons[2] = new Person("Leonhard Euler");
 
-        Person[] result = Task5.parseContacts(names, "ASC");
+        Person[] result = Task5.parseContacts(names, SortingOrder.ASC);
         for (int i = 0; i < names.length; i++) {
             Assertions.assertEquals(persons[i].getName(), result[i].getName());
             Assertions.assertEquals(persons[i].getSurname(), result[i].getSurname());
@@ -100,12 +101,12 @@ public class Task5Test {
         String[] names = new String[] {"Aohn Aocke", "BThomas", "David Hume", "CRene"};
         Person[] persons = new Person[names.length];
 
-        persons[0] = new Person("Aohn", "Aocke");
+        persons[0] = new Person("Aohn Aocke");
         persons[1] = new Person("BThomas");
         persons[2] = new Person("CRene");
-        persons[3] = new Person("David", "Hume");
+        persons[3] = new Person("David Hume");
 
-        Person[] result = Task5.parseContacts(names, "ASC");
+        Person[] result = Task5.parseContacts(names, SortingOrder.ASC);
         for (int i = 0; i < names.length; i++) {
             Assertions.assertEquals(persons[i].getName(), result[i].getName());
             Assertions.assertEquals(persons[i].getSurname(), result[i].getSurname());
@@ -118,12 +119,11 @@ public class Task5Test {
         String[] names = new String[] {"Aohn Aocke", "BThomas", "David Hume", "CRene"};
         Person[] persons = new Person[names.length];
 
-        persons[3] = new Person("Aohn", "Aocke");
+        persons[3] = new Person("Aohn Aocke");
         persons[2] = new Person("BThomas");
         persons[1] = new Person("CRene");
-        persons[0] = new Person("David", "Hume");
-
-        Person[] result = Task5.parseContacts(names, "DESC");
+        persons[0] = new Person("David Hume");
+        Person[] result = Task5.parseContacts(names, SortingOrder.DESC);
         for (int i = 0; i < names.length; i++) {
             Assertions.assertEquals(persons[i].getName(), result[i].getName());
             Assertions.assertEquals(persons[i].getSurname(), result[i].getSurname());
@@ -136,7 +136,7 @@ public class Task5Test {
         String[] names = new String[] {};
         Person[] persons = new Person[names.length];
 
-        Person[] result = Task5.parseContacts(names, "DESC");
+        Person[] result = Task5.parseContacts(names, SortingOrder.DESC);
         for (int i = 0; i < names.length; i++) {
             Assertions.assertEquals(persons[i].getName(), result[i].getName());
             Assertions.assertEquals(persons[i].getSurname(), result[i].getSurname());
@@ -156,26 +156,26 @@ public class Task5Test {
     }
 
     @Test
-    @DisplayName("Некорректный параметр сортировки")
-    void convertToRoman_whenInvalidSort() {
-        String[] names = new String[] {};
-
-        IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            Task5.parseContacts(names, "yfgyg");
-        }, "Sort is valid!");
-
-        Assertions.assertEquals("Incorrect sort order selected!", thrown.getMessage());
-    }
-
-    @Test
     @DisplayName("Имя состоит из 3 слов")
     void convertToRoman_whenWordsInNameMoreThen2() {
         String[] names = new String[] {"Aohn Aocke Aocke", "BThomas", "David Hume", "CRene"};
 
         IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            Task5.parseContacts(names, "ASC");
+            Task5.parseContacts(names, SortingOrder.ASC);
         }, "Name is valid!");
 
         Assertions.assertEquals("The name must consist of 1 or 2 words!", thrown.getMessage());
+    }
+
+    @Test
+    @DisplayName("Есть null имена")
+    void convertToRoman_whenWordsInNameIsNull() {
+        String[] names = new String[] {null, "BThomas", "David Hume", "CRene"};
+
+        IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            Task5.parseContacts(names, SortingOrder.ASC);
+        }, "Name is valid!");
+
+        Assertions.assertEquals("First name last name cannot be null!", thrown.getMessage());
     }
 }

@@ -10,7 +10,7 @@ public class StockMarketImpl implements StockMarket {
 
     @Override
     public void add(Stock stock) {
-        if (!isFindDuplicate(stock.getTitleStock())) {
+        if (!doesStockHasDuplicate(stock.getTitleStock())) {
             LOGGER.info("Add stock: " + stock.toString());
         } else {
             LOGGER.info("Update stock: " + stock.toString());
@@ -36,7 +36,7 @@ public class StockMarketImpl implements StockMarket {
         return stocks.peek();
     }
 
-    private boolean isFindDuplicate(String str) {
+    private boolean doesStockHasDuplicate(String str) {
         for (Stock st : stocks) {
             if (st.getTitleStock().equals(str)) {
                 stocks.remove(st);

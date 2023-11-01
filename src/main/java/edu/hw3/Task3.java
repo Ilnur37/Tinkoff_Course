@@ -1,7 +1,7 @@
 package edu.hw3;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,7 +13,7 @@ public class Task3 {
 
     }
 
-    public static <T> Map<T, Integer> freqDict(ArrayList<T> list) {
+    public static <T> Map<T, Integer> freqDict(List<T> list) {
         if (list == null) {
             throw new NullPointerException("The list of objects is empty!");
         }
