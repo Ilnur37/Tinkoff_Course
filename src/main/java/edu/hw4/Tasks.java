@@ -324,12 +324,12 @@ public class Tasks {
     private static void validationError(List<Animal> animals) {
         Map<String, String> errors = new ValidationError().iterateThroughList(animals);
         if (!errors.isEmpty()) {
-            StringBuilder stringBuilder = new StringBuilder("\n");
+            StringBuilder resultOfValidation = new StringBuilder("\n");
             for (Map.Entry<String, String> entry : errors.entrySet()) {
-                stringBuilder.append("Exception in animal: ").append(entry.getKey()).append("\n");
-                stringBuilder.append(entry.getValue()).append("\n");
+                resultOfValidation.append("Exception in animal: ").append(entry.getKey()).append("\n");
+                resultOfValidation.append(entry.getValue()).append("\n");
             }
-            throw new IllegalArgumentException(stringBuilder.toString());
+            throw new IllegalArgumentException(resultOfValidation.toString());
         }
     }
 
