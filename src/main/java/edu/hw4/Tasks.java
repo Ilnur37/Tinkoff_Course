@@ -322,7 +322,7 @@ public class Tasks {
      * @param animals список животных
      */
     private static void validationError(List<Animal> animals) {
-        Map<String, String> errors = ValidationError.iterateThroughList(animals);
+        Map<String, String> errors = new ValidationError().iterateThroughList(animals);
         if (!errors.isEmpty()) {
             StringBuilder stringBuilder = new StringBuilder("\n");
             for (Map.Entry<String, String> entry : errors.entrySet()) {
@@ -346,7 +346,7 @@ public class Tasks {
         Map<String, Set<IllegalArgumentException>> errors = new HashMap<>();
 
         for (Animal animal : animals) {
-            Set<IllegalArgumentException> setOfErrors = ValidationError.validation(animal);
+            Set<IllegalArgumentException> setOfErrors = new ValidationError().validation(animal);
             if (!setOfErrors.isEmpty()) {
                 errors.put(animal == null ? null : animal.name(), setOfErrors);
             }

@@ -9,19 +9,13 @@ import java.util.Map;
 import java.util.Set;
 
 public class ValidationError {
-    private static final int MIN_AGE = 0;
-    private static final int MAX_AGE = 150;
-    private static final int MIN_HEIGHT = 1;
-    private static final int MAX_HEIGHT = 3300;
-    private static final int MIN_WEIGHT = 0;
-    private static final int MAX_WEIGHT = 150000;
-    private static final List<String> USED_NAMES = new ArrayList<>();
+    private final List<String> USED_NAMES = new ArrayList<>();
 
-    private ValidationError() {
+    public ValidationError() {
 
     }
 
-    public static Map<String, String> iterateThroughList(List<Animal> animals) {
+    public Map<String, String> iterateThroughList(List<Animal> animals) {
         Map<String, String> errors = new HashMap<>();
 
         for (Animal animal : animals) {
@@ -39,7 +33,7 @@ public class ValidationError {
         return errors;
     }
 
-    public static Set<IllegalArgumentException> validation(Animal animal) {
+    public Set<IllegalArgumentException> validation(Animal animal) {
         Set<IllegalArgumentException> validationErrors = new HashSet<>();
 
         try {
@@ -93,19 +87,19 @@ public class ValidationError {
         return validationErrors;
     }
 
-    private static void checkNull(Animal animal) {
+    private void checkNull(Animal animal) {
         if (animal == null) {
-            throw new IllegalArgumentException("Animals is null!");
+            throw new IllegalArgumentException("Animal is null!");
         }
     }
 
-    private static void checkName(Animal animal) {
+    private void checkName(Animal animal) {
         if (animal.name() == null) {
             throw new IllegalArgumentException("Name field is null!");
         }
     }
 
-    private static void checkForAlreadyUsedName(Animal animal) {
+    private void checkForAlreadyUsedName(Animal animal) {
         if (USED_NAMES.contains(animal.name())) {
             throw new IllegalArgumentException("Name field is already used!");
         } else {
@@ -113,48 +107,64 @@ public class ValidationError {
         }
     }
 
-    private static void checkType(Animal animal) {
+    private void checkType(Animal animal) {
         if (animal.type() == null) {
             throw new IllegalArgumentException("Type field is null!");
         }
     }
 
-    private static void checkSex(Animal animal) {
+    private void checkSex(Animal animal) {
         if (animal.sex() == null) {
             throw new IllegalArgumentException("Sex field is null!");
         }
     }
 
-    private static void checkAge(Animal animal) {
+    private void checkAge(Animal animal) {
+        int MAX_AGE = 150;
         if (animal.age() > MAX_AGE) {
             throw new IllegalArgumentException(
-                "Age field greater than maximum value!  (Age = " + animal.age() + "  MAX_AGE = " + MAX_AGE + ")");
+                "Age field greater than maximum value!  (Age = " + animal.age() +
+                    "  MAX_AGE = " + MAX_AGE + ")");
         }
+        int MIN_AGE = 0;
         if (animal.age() < MIN_AGE) {
             throw new IllegalArgumentException(
-                "Age field less than maximum value!  (Age = " + animal.age() + "  MIN_AGE = " + MIN_AGE + ")");
+                "Age field less than maximum value!  (Age = " + animal.age() +
+                    "  MIN_AGE = " + MIN_AGE + ")");
         }
     }
 
-    private static void checkHeight(Animal animal) {
+    private void checkHeight(Animal animal) {
+        int MAX_HEIGHT = 3300;
         if (animal.height() > MAX_HEIGHT) {
-            throw new IllegalArgumentException("Height field greater than maximum value " + MAX_HEIGHT + "!");
+            throw new IllegalArgumentException(
+                "Height field greater than maximum value!  (Height = " + animal.height() +
+                    "  MAX_HEIGHT = " + MAX_HEIGHT + ")");
         }
+        int MIN_HEIGHT = 0;
         if (animal.height() < MIN_HEIGHT) {
-            throw new IllegalArgumentException("Height field less than maximum value" + MIN_HEIGHT + "!");
+            throw new IllegalArgumentException(
+                "Height field less than minimum value!  (Height = " + animal.height() +
+                    "  MIN_HEIGHT = " + MIN_HEIGHT + ")");
         }
     }
 
-    private static void checkWeight(Animal animal) {
+    private void checkWeight(Animal animal) {
+        int MAX_WEIGHT = 150000;
         if (animal.weight() > MAX_WEIGHT) {
-            throw new IllegalArgumentException("Weight field greater than maximum value " + MAX_WEIGHT + "!");
+            throw new IllegalArgumentException(
+                "Weight field greater than maximum value!  (Weight = " + animal.weight() +
+                    "  MAX_WEIGHT = " + MAX_WEIGHT + ")");
         }
+        int MIN_WEIGHT = 0;
         if (animal.weight() < MIN_WEIGHT) {
-            throw new IllegalArgumentException("Weight field less than maximum value" + MIN_WEIGHT + "!");
+            throw new IllegalArgumentException(
+                "Weight field less than minimum value!  (Weight = " + animal.weight() +
+                    "  MIN_WEIGHT = " + MIN_WEIGHT + ")");
         }
     }
 
-    private static void clearUsedNames() {
+    private void clearUsedNames() {
         USED_NAMES.clear();
     }
 }

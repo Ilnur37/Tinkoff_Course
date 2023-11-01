@@ -81,6 +81,7 @@ public class AnimalTest {
         .build();
 
     private final List<Animal> animals = new ArrayList<>();
+
     {
         animals.add(cat1);
         animals.add(cat2);
@@ -278,5 +279,23 @@ public class AnimalTest {
         Assertions.assertFalse(res);
     }
 
+    @Test
+    @DisplayName("task 18")
+    void task18() {
+        List<List<Animal>> animals1 = new ArrayList<>();
+        Animal heavyFish = Animal.builder()
+            .name("Heavy")
+            .type(Animal.Type.FISH)
+            .sex(Animal.Sex.M)
+            .age(11)
+            .height(200)
+            .weight(150)
+            .bites(true).build();
+        animals1.add(new ArrayList<>(List.of(cat1, cat2, dog1, fish1)));
+        animals1.add(new ArrayList<>(List.of(dog2, bird1, spider1, heavyFish)));
+        Animal res = Tasks.findHeaviestFishInLists(animals1);
+
+        Assertions.assertEquals(heavyFish, res);
+    }
 
 }
