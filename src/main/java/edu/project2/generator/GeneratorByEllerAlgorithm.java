@@ -1,7 +1,8 @@
 package edu.project2.generator;
 
-import edu.project2.Cell;
+import edu.project2.cells.Cell;
 import edu.project2.Maze;
+import edu.project2.cells.TypeCell;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -133,28 +134,28 @@ public class GeneratorByEllerAlgorithm implements Generator {
         Cell[][] cells = new Cell[heightCells][widthCells];
 
         for (int i = 0; i < widthCells; i++) {
-            cells[0][i] = new Cell(0, i, Cell.Type.FLOOR);
-            cells[heightCells - 1][i] = new Cell(heightCells - 1, i, Cell.Type.FLOOR);
+            cells[0][i] = new Cell(0, i, TypeCell.FLOOR);
+            cells[heightCells - 1][i] = new Cell(heightCells - 1, i, TypeCell.FLOOR);
         }
         for (int i = 1; i < heightCells; i++) {
-            cells[i][0] = new Cell(i, 0, Cell.Type.WALL);
-            cells[i][widthCells - 1] = new Cell(i, widthCells - 1, Cell.Type.WALL);
+            cells[i][0] = new Cell(i, 0, TypeCell.WALL);
+            cells[i][widthCells - 1] = new Cell(i, widthCells - 1, TypeCell.WALL);
         }
 
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 if (rightBorder[i][j] == 1) {
-                    cells[i + 1][(j + 1) * 3 + j + 1] = new Cell(i + 1, (j + 1) * 3 + j + 1, Cell.Type.WALL);
+                    cells[i + 1][(j + 1) * 3 + j + 1] = new Cell(i + 1, (j + 1) * 3 + j + 1, TypeCell.WALL);
                 }
                 if (lowerBorder[i][j] == 1) {
                     if (cells[i + 1][j * 3 + j] == null) {
-                        cells[i + 1][j * 3 + j] = new Cell(i + 1, j * 3 + j, Cell.Type.FLOOR);
+                        cells[i + 1][j * 3 + j] = new Cell(i + 1, j * 3 + j, TypeCell.FLOOR);
                     }
-                    cells[i + 1][j * 3 + j + 1] = new Cell(i + 1, j * 3 + j + 1, Cell.Type.FLOOR);
-                    cells[i + 1][j * 3 + j + 2] = new Cell(i + 1, j * 3 + j + 2, Cell.Type.FLOOR);
-                    cells[i + 1][j * 3 + j + 3] = new Cell(i + 1, j * 3 + j + 3, Cell.Type.FLOOR);
+                    cells[i + 1][j * 3 + j + 1] = new Cell(i + 1, j * 3 + j + 1, TypeCell.FLOOR);
+                    cells[i + 1][j * 3 + j + 2] = new Cell(i + 1, j * 3 + j + 2, TypeCell.FLOOR);
+                    cells[i + 1][j * 3 + j + 3] = new Cell(i + 1, j * 3 + j + 3, TypeCell.FLOOR);
                     if (cells[i + 1][j * 3 + j + 4] == null) {
-                        cells[i + 1][j * 3 + j + 4] = new Cell(i + 1, j * 3 + j + 4, Cell.Type.FLOOR);
+                        cells[i + 1][j * 3 + j + 4] = new Cell(i + 1, j * 3 + j + 4, TypeCell.FLOOR);
                     }
                 }
             }
@@ -163,7 +164,7 @@ public class GeneratorByEllerAlgorithm implements Generator {
         for (int i = 1; i < heightCells - 1; i++) {
             for (int j = 1; j < widthCells - 1; j++) {
                 if (cells[i][j] == null) {
-                    cells[i][j] = new Cell(i, j, Cell.Type.PASSAGE);
+                    cells[i][j] = new Cell(i, j, TypeCell.PASSAGE);
                 }
             }
         }
