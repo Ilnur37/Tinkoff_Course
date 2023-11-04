@@ -1,7 +1,7 @@
 package edu.project2.generator;
 
-import edu.project2.cells.Cell;
 import edu.project2.Maze;
+import edu.project2.cells.Cell;
 import edu.project2.cells.TypeCell;
 import java.util.ArrayList;
 import java.util.List;
@@ -128,6 +128,7 @@ public class GeneratorByEllerAlgorithm implements Generator {
         lowerBorder[height - 1][width - 1] = 1;
     }
 
+    @SuppressWarnings("MagicNumber")
     private Maze createMaze(int[][] rightBorder, int[][] lowerBorder) {
         int heightCells = height + 1;
         int widthCells = width * 4 + 1;

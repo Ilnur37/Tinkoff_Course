@@ -1,7 +1,7 @@
 package edu.project2.solver;
 
-import edu.project2.cells.Coordinate;
 import edu.project2.Maze;
+import edu.project2.cells.Coordinate;
 import edu.project2.cells.TypeCell;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,52 +14,37 @@ public class SolverDFSImpl extends Solver {
         super(start, end);
     }
 
+    @Override
     public List<Coordinate> solve(Maze maze) {
-        if (explore(maze, start.row(), start.col())
-        ) {
+        if (explore(maze, start.getRow(), start.getCol())) {
+            cleanFieldIsVisited(maze);
             return path;
         }
         return Collections.emptyList();
     }
 
     private boolean explore(Maze maze, int row, int col) {
-        if (!maze.isValidCoordinate(row, col)) {
+        if (maze.isInvalidCoordinate(row, col)) {
             return false;
         }
+
         path.add(new Coordinate(row, col));
-        maze.cellVisited(row, col);
-        if (row == end.row() && col == end.col()) {
+        maze.getGrid()[row][col].setVisited(true);
+        if (isEnd(row, col)) {
             return true;
         }
 
-        if (maze.isValidCoordinate(row, col + 2)) {
-            if (maze.getGrid()[row][col + 2].getType() != TypeCell.WALL) {
-                if (explore(maze, row + DIRECTIONS[0][0], col + DIRECTIONS[0][1])) {
+        int dirInx = 0;
+        for (Coordinate coordinate : coordForCheckBorder) {
+            int biasRow = coordinate.getRow();
+            int biasCol = coordinate.getCol();
+            TypeCell forbiddenType = biasCol == 0 ? TypeCell.FLOOR : TypeCell.WALL;
+            if (maze.getGrid()[row + biasRow][col + biasCol].getType() != forbiddenType) {
+                if (explore(maze, row + directions[dirInx][0], col + directions[dirInx][1])) {
                     return true;
                 }
             }
-        }
-
-        if (maze.getGrid()[row][col].getType() != TypeCell.FLOOR) {
-            if (explore(maze, row + DIRECTIONS[1][0], col + DIRECTIONS[1][1])) {
-                return true;
-            }
-        }
-
-        if (maze.isValidCoordinate(row, col - 2)) {
-            if (maze.getGrid()[row][col - 2].getType() != TypeCell.WALL) {
-                if (explore(maze, row + DIRECTIONS[2][0], col + DIRECTIONS[2][1])) {
-                    return true;
-                }
-            }
-        }
-
-        if (maze.isValidCoordinate(row - 1, col)) {
-            if (maze.getGrid()[row - 1][col].getType() != TypeCell.FLOOR) {
-                if (explore(maze, row + DIRECTIONS[3][0], col + DIRECTIONS[3][1])) {
-                    return true;
-                }
-            }
+            ++dirInx;
         }
 
         path.remove(path.size() - 1);

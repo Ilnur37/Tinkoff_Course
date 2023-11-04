@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class Coordinate {
-    private final int row;
-    private final int col;
+public class LinkedCoordinate{
+    private final Coordinate coordinate;
+    private final LinkedCoordinate parent;
 }

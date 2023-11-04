@@ -4,19 +4,17 @@ import lombok.Getter;
 
 @Getter
 public class Cell {
-    private final int row;
-    private final int col;
+    private final Coordinate coordinate;
     private final TypeCell type;
     private boolean isVisited;
 
     public Cell(int row, int col, TypeCell typeCell) {
-        this.row = row;
-        this.col = col;
+        this.coordinate = new Coordinate(row, col);
         this.type = typeCell;
         this.isVisited = false;
     }
 
-    public void cellVisited() {
-        isVisited = true;
+    public void setVisited(boolean bool) {
+        isVisited = bool;
     }
 }

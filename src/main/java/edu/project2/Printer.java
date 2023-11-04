@@ -2,45 +2,52 @@ package edu.project2;
 
 import edu.project2.cells.Cell;
 import edu.project2.cells.Coordinate;
+import edu.project2.cells.TypeCell;
 import java.util.List;
 
+@SuppressWarnings("RegexpSinglelineJava")
 public class Printer {
+    private Printer() {
+
+    }
+
     public static void printMaze(Maze maze) {
         for (Cell[] cells : maze.getGrid()) {
             System.out.println();
             for (Cell cell : cells) {
-                switch (cell.getType()) {
-                    case PASSAGE -> System.out.print(" ");
-                    case WALL -> System.out.print("|");
-                    case FLOOR -> System.out.print("_");
+                printSymbol(cell.getType());
+            }
+        }
+    }
+
+    private static void printSymbol(TypeCell typeCell) {
+        switch (typeCell) {
+            case WALL -> System.out.print("|");
+            case FLOOR -> System.out.print("_");
+            default -> System.out.print(" ");
+        }
+    }
+
+    public static void printMazeWithPath(Maze maze, List<Coordinate> path) {
+        for (Cell[] cells : maze.getGrid()) {
+            System.out.println();
+            for (Cell cell : cells) {
+                if (!isPartOfPath(cell, path)) {
+                    printSymbol(cell.getType());
                 }
             }
         }
     }
 
-    public static void PrintMazeWithPath(Maze maze, List<Coordinate> path) {
-        Cell[][] gird = maze.getGrid();
-        boolean flag = true;
-        for (int i = 0; i < gird.length; i++) {
-            System.out.println();
-            for (int j = 0; j < gird[0].length; j++) {
-                flag = true;
-                for (Coordinate coordinate : path) {
-                    if (coordinate.row() == i && coordinate.col() == j) {
-                        System.out.print("o");
-                        flag = false;
-                        break;
-                    }
-                }
-                if (flag) {
-                    switch (gird[i][j].getType()) {
-                        case PASSAGE -> System.out.print(" ");
-                        case WALL -> System.out.print("|");
-                        case FLOOR -> System.out.print("_");
-                    }
-                }
+    private static boolean isPartOfPath(Cell cell, List<Coordinate> path) {
+        int row = cell.getCoordinate().getRow();
+        int col = cell.getCoordinate().getCol();
+        for (Coordinate cordPath : path) {
+            if (cordPath.getRow() == row && cordPath.getCol() == col) {
+                System.out.print("o");
+                return true;
             }
         }
-        return;
+        return false;
     }
 }
