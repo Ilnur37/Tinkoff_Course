@@ -14,7 +14,7 @@ public abstract class Solver {
         {1, 0},
         {0, -1 * scaleWidth},
         {-1, 0}};
-    public final Coordinate[] coordForCheckBorder = new Coordinate[] {
+    public final Coordinate[] cordForCheckBorder = new Coordinate[] {
         new Coordinate(0, 2),
         new Coordinate(0, 0),
         new Coordinate(0, -2),
@@ -22,20 +22,20 @@ public abstract class Solver {
     };
 
     protected Solver(Coordinate start, Coordinate end) {
-        this.start = new Coordinate(start.getRow(), start.getCol() * scaleWidth - 2);
-        this.end = new Coordinate(end.getRow(), end.getCol() * scaleWidth - 2);
+        this.start = new Coordinate(start.row(), start.col() * scaleWidth - 2);
+        this.end = new Coordinate(end.row(), end.col() * scaleWidth - 2);
     }
 
     abstract List<Coordinate> solve(Maze maze);
 
     boolean isEnd(int row, int col) {
-        return row == end.getRow() && col == end.getCol();
+        return row == end.row() && col == end.col();
     }
 
     void cleanFieldIsVisited(Maze maze) {
         for (Cell[] cells : maze.getGrid()) {
             for (Cell cell : cells) {
-                maze.getGrid()[cell.getCoordinate().getRow()][cell.getCoordinate().getCol()].setVisited(false);
+                maze.getGrid()[cell.getCoordinate().row()][cell.getCoordinate().col()].setVisited(false);
             }
         }
     }

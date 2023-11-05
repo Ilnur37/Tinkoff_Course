@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class SolverDFSImpl extends Solver {
-    public final List<Coordinate> path = new ArrayList<>();
+    private final List<Coordinate> path = new ArrayList<>();
 
     public SolverDFSImpl(Coordinate start, Coordinate end) {
         super(start, end);
@@ -16,7 +16,7 @@ public class SolverDFSImpl extends Solver {
 
     @Override
     public List<Coordinate> solve(Maze maze) {
-        if (explore(maze, start.getRow(), start.getCol())) {
+        if (explore(maze, start.row(), start.col())) {
             cleanFieldIsVisited(maze);
             return path;
         }
@@ -35,9 +35,9 @@ public class SolverDFSImpl extends Solver {
         }
 
         int dirInx = 0;
-        for (Coordinate coordinate : coordForCheckBorder) {
-            int biasRow = coordinate.getRow();
-            int biasCol = coordinate.getCol();
+        for (Coordinate coordinate : cordForCheckBorder) {
+            int biasRow = coordinate.row();
+            int biasCol = coordinate.col();
             TypeCell forbiddenType = biasCol == 0 ? TypeCell.FLOOR : TypeCell.WALL;
             if (maze.getGrid()[row + biasRow][col + biasCol].getType() != forbiddenType) {
                 if (explore(maze, row + directions[dirInx][0], col + directions[dirInx][1])) {

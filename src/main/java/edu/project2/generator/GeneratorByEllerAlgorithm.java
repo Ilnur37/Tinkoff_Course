@@ -28,7 +28,7 @@ public class GeneratorByEllerAlgorithm implements Generator {
             createRightBorder(rightBorder, j);
             createLowerBorder(lowerBorder, j);
             checkLowerBorder(lowerBorder, j);
-            preparatingNewLine(j, lowerBorder);
+            preparingNewLine(lowerBorder, j);
         }
         addingEndLine(rightBorder, lowerBorder);
         return createMaze(rightBorder, lowerBorder);
@@ -87,13 +87,13 @@ public class GeneratorByEllerAlgorithm implements Generator {
 
     private void checkLowerBorder(int[][] lowerBorder, int row) {
         for (int i = 0; i < width; i++) {
-            if (calculateLowerWalls(cellBelongSet.get(i), row, lowerBorder) == 0) {
+            if (calculateLowerBorder(lowerBorder, cellBelongSet.get(i), row) == 0) {
                 lowerBorder[row][i] = 0;
             }
         }
     }
 
-    private int calculateLowerWalls(int element, int row, int[][] lowerBorder) {
+    private int calculateLowerBorder(int[][] lowerBorder, int element, int row) {
         int countHorizontalWalls = 0;
         for (int i = 0; i < width; i++) {
             if (cellBelongSet.get(i) == element && lowerBorder[row][i] == 0) {
@@ -103,7 +103,7 @@ public class GeneratorByEllerAlgorithm implements Generator {
         return countHorizontalWalls;
     }
 
-    private void preparatingNewLine(int row, int[][] lowerBorder) {
+    private void preparingNewLine(int[][] lowerBorder, int row) {
         for (int i = 0; i < width; i++) {
             if (lowerBorder[row][i] == 1) {
                 cellBelongSet.set(i, emptyValue);
@@ -129,9 +129,9 @@ public class GeneratorByEllerAlgorithm implements Generator {
     }
 
     @SuppressWarnings("MagicNumber")
-    private Maze createMaze(int[][] rightBorder, int[][] lowerBorder) {
-        int heightCells = height + 1;
-        int widthCells = width * 4 + 1;
+    public Maze createMaze(int[][] rightBorder, int[][] lowerBorder) {
+        int heightCells = rightBorder.length + 1;
+        int widthCells = rightBorder[0].length * 4 + 1;
         Cell[][] cells = new Cell[heightCells][widthCells];
 
         for (int i = 0; i < widthCells; i++) {
@@ -143,20 +143,25 @@ public class GeneratorByEllerAlgorithm implements Generator {
             cells[i][widthCells - 1] = new Cell(i, widthCells - 1, TypeCell.WALL);
         }
 
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
+        for (int i = 0; i < rightBorder.length; i++) {
+            for (int j = 0; j < rightBorder[0].length; j++) {
                 if (rightBorder[i][j] == 1) {
-                    cells[i + 1][(j + 1) * 3 + j + 1] = new Cell(i + 1, (j + 1) * 3 + j + 1, TypeCell.WALL);
+                    cells[i + 1][(j + 1) * 4] = new Cell(i + 1, (j + 1) * 4, TypeCell.WALL);
                 }
                 if (lowerBorder[i][j] == 1) {
-                    if (cells[i + 1][j * 3 + j] == null) {
-                        cells[i + 1][j * 3 + j] = new Cell(i + 1, j * 3 + j, TypeCell.FLOOR);
+                    int tempI = i + 1;
+                    int k = 1;
+                    if (cells[tempI][j * 4] == null) {
+                        cells[tempI][j * 4] = new Cell(tempI, j * 4, TypeCell.FLOOR);
                     }
-                    cells[i + 1][j * 3 + j + 1] = new Cell(i + 1, j * 3 + j + 1, TypeCell.FLOOR);
-                    cells[i + 1][j * 3 + j + 2] = new Cell(i + 1, j * 3 + j + 2, TypeCell.FLOOR);
-                    cells[i + 1][j * 3 + j + 3] = new Cell(i + 1, j * 3 + j + 3, TypeCell.FLOOR);
-                    if (cells[i + 1][j * 3 + j + 4] == null) {
-                        cells[i + 1][j * 3 + j + 4] = new Cell(i + 1, j * 3 + j + 4, TypeCell.FLOOR);
+                    cells[tempI][j * 4 + k] = new Cell(tempI, j * 4 + k, TypeCell.FLOOR);
+                    ++k;
+                    cells[tempI][j * 4 + k] = new Cell(tempI, j * 4 + k, TypeCell.FLOOR);
+                    ++k;
+                    cells[tempI][j * 4 + k] = new Cell(tempI, j * 4 + k, TypeCell.FLOOR);
+                    ++k;
+                    if (cells[tempI][j * 4 + k] == null) {
+                        cells[tempI][j * 4 + k] = new Cell(tempI, j * 4 + k, TypeCell.FLOOR);
                     }
                 }
             }

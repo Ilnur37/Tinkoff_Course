@@ -1,11 +1,4 @@
 package edu.project2.cells;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
-@Getter
-@AllArgsConstructor
-public class LinkedCoordinate{
-    private final Coordinate coordinate;
-    private final LinkedCoordinate parent;
+public record LinkedCoordinate(Coordinate coordinate, edu.project2.cells.LinkedCoordinate parent) {
 }

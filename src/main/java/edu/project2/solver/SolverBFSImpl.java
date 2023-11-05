@@ -22,8 +22,8 @@ public class SolverBFSImpl extends Solver {
 
         while (!nextToVisit.isEmpty()) {
             LinkedCoordinate current = nextToVisit.remove();
-            int row = current.getCoordinate().getRow();
-            int col = current.getCoordinate().getCol();
+            int row = current.coordinate().row();
+            int col = current.coordinate().col();
 
             if (maze.isInvalidCoordinate(row, col)) {
                 continue;
@@ -35,9 +35,9 @@ public class SolverBFSImpl extends Solver {
             }
 
             int dirInx = 0;
-            for (Coordinate coordinate : coordForCheckBorder) {
-                int biasRow = coordinate.getRow();
-                int biasCol = coordinate.getCol();
+            for (Coordinate coordinate : cordForCheckBorder) {
+                int biasRow = coordinate.row();
+                int biasCol = coordinate.col();
                 TypeCell forbiddenType = biasCol == 0 ? TypeCell.FLOOR : TypeCell.WALL;
                 if (maze.getGrid()[row + biasRow][col + biasCol].getType() != forbiddenType) {
                     LinkedCoordinate newCoordinate = new LinkedCoordinate(
@@ -60,8 +60,8 @@ public class SolverBFSImpl extends Solver {
         LinkedCoordinate iter = cur;
 
         while (iter != null) {
-            path.add(iter.getCoordinate());
-            iter = iter.getParent();
+            path.add(iter.coordinate());
+            iter = iter.parent();
         }
 
         return path;

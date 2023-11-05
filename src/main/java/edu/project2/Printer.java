@@ -15,16 +15,22 @@ public class Printer {
         for (Cell[] cells : maze.getGrid()) {
             System.out.println();
             for (Cell cell : cells) {
-                printSymbol(cell.getType());
+                System.out.print(printSymbol(cell.getType()));
             }
         }
     }
 
-    private static void printSymbol(TypeCell typeCell) {
+    public static char printSymbol(TypeCell typeCell) {
         switch (typeCell) {
-            case WALL -> System.out.print("|");
-            case FLOOR -> System.out.print("_");
-            default -> System.out.print(" ");
+            case WALL -> {
+                return '|';
+            }
+            case FLOOR -> {
+                return '_';
+            }
+            default -> {
+                return ' ';
+            }
         }
     }
 
@@ -33,17 +39,17 @@ public class Printer {
             System.out.println();
             for (Cell cell : cells) {
                 if (!isPartOfPath(cell, path)) {
-                    printSymbol(cell.getType());
+                    System.out.print(printSymbol(cell.getType()));
                 }
             }
         }
     }
 
     private static boolean isPartOfPath(Cell cell, List<Coordinate> path) {
-        int row = cell.getCoordinate().getRow();
-        int col = cell.getCoordinate().getCol();
+        int row = cell.getCoordinate().row();
+        int col = cell.getCoordinate().col();
         for (Coordinate cordPath : path) {
-            if (cordPath.getRow() == row && cordPath.getCol() == col) {
+            if (cordPath.row() == row && cordPath.col() == col) {
                 System.out.print("o");
                 return true;
             }
