@@ -38,11 +38,11 @@ public class Task1Test {
     @Test
     @DisplayName("Список null")
     void averageTime_whenListIsNull() {
-        IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        NullPointerException thrown = Assertions.assertThrows(NullPointerException.class, () -> {
             Task1.averageTime(null);
-        }, "List is not null");
+        }, "dates is not null");
 
-        Assertions.assertEquals("List of date can not be null!", thrown.getMessage());
+        Assertions.assertEquals("dates is marked non-null but is null", thrown.getMessage());
     }
 
     @Test
@@ -82,7 +82,7 @@ public class Task1Test {
         }, "All elements of the list are correctly");
 
         Assertions.assertEquals(
-            "Text 2022/03/12, 20/20 does not match the format ^\\d{4}-\\d{2}-\\d{2}, \\d{2}:\\d{2}$!",
+            "2022/03/12, 20/20 does not match the format ^\\d{4}-\\d{2}-\\d{2}, \\d{2}:\\d{2}$!",
             thrown.getMessage()
         );
     }
@@ -98,7 +98,7 @@ public class Task1Test {
         }, "All elements of the list are correctly");
 
         Assertions.assertEquals(
-            "Text [2022-03-12, 20:20, 2022-03-12, 20:00], time interval cannot be negative!",
+            "[2022-03-12, 20:20, 2022-03-12, 20:00], time interval cannot be negative!",
             thrown.getMessage()
         );
     }

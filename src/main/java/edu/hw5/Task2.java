@@ -8,7 +8,7 @@ import java.util.List;
 
 public class Task2 {
     private final static int MIN_YEAR = 0;
-    private final static int DAY = 13;
+    private final static int THIRTEENTH = 13;
 
     private Task2() {
 
@@ -19,7 +19,7 @@ public class Task2 {
             throw new IllegalArgumentException("The year must not be less than the minimum value: " + MIN_YEAR);
         }
         List<LocalDate> fridays13 = new ArrayList<>();
-        LocalDate date = LocalDate.of(year, 1, DAY);
+        LocalDate date = LocalDate.of(year, 1, THIRTEENTH);
         while (date.getYear() == year) {
             if (date.getDayOfWeek() == DayOfWeek.FRIDAY) {
                 fridays13.add(date);
@@ -31,10 +31,10 @@ public class Task2 {
 
     public static LocalDate nextFriday13(LocalDate date) {
         LocalDate nextFriday13 = date.plusDays(1);
-        while (!nextFriday13.getDayOfWeek().equals(DayOfWeek.FRIDAY) || nextFriday13.getDayOfMonth() != DAY) {
+        while (!nextFriday13.getDayOfWeek().equals(DayOfWeek.FRIDAY) || nextFriday13.getDayOfMonth() != THIRTEENTH) {
             nextFriday13 = nextFriday13.plusMonths(1);
             nextFriday13 = nextFriday13
-                .withDayOfMonth(DAY)
+                .withDayOfMonth(THIRTEENTH)
                 .with(TemporalAdjusters.nextOrSame(DayOfWeek.FRIDAY));
         }
 
