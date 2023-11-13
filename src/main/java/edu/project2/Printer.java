@@ -20,18 +20,15 @@ public class Printer {
         }
     }
 
+    @SuppressWarnings("InnerAssignment")
     public static char printSymbol(TypeCell typeCell) {
+        char symbol;
         switch (typeCell) {
-            case WALL -> {
-                return '|';
-            }
-            case FLOOR -> {
-                return '_';
-            }
-            default -> {
-                return ' ';
-            }
+            case WALL -> symbol = '|';
+            case FLOOR -> symbol = '_';
+            default -> symbol = ' ';
         }
+        return symbol;
     }
 
     public static void printMazeWithPath(Maze maze, List<Coordinate> path) {

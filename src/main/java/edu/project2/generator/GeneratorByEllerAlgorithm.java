@@ -28,9 +28,9 @@ public class GeneratorByEllerAlgorithm implements Generator {
             createRightBorder(rightBorder, j);
             createLowerBorder(lowerBorder, j);
             checkLowerBorder(lowerBorder, j);
-            preparingNewLine(lowerBorder, j);
+            prepareNewLine(lowerBorder, j);
         }
-        addingEndLine(rightBorder, lowerBorder);
+        addEndLine(rightBorder, lowerBorder);
         return createMaze(rightBorder, lowerBorder);
     }
 
@@ -103,7 +103,7 @@ public class GeneratorByEllerAlgorithm implements Generator {
         return countHorizontalWalls;
     }
 
-    private void preparingNewLine(int[][] lowerBorder, int row) {
+    private void prepareNewLine(int[][] lowerBorder, int row) {
         for (int i = 0; i < width; i++) {
             if (lowerBorder[row][i] == 1) {
                 cellBelongSet.set(i, emptyValue);
@@ -111,7 +111,7 @@ public class GeneratorByEllerAlgorithm implements Generator {
         }
     }
 
-    private void addingEndLine(int[][] rightBorder, int[][] lowerBorder) {
+    private void addEndLine(int[][] rightBorder, int[][] lowerBorder) {
         assignSet();
         createRightBorder(rightBorder, height - 1);
         checkedEndLine(rightBorder, lowerBorder);

@@ -9,9 +9,9 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-public class SolverBFSImpl extends Solver {
+public class SolverBFS extends Solver {
 
-    public SolverBFSImpl(Coordinate start, Coordinate end) {
+    public SolverBFS(Coordinate start, Coordinate end) {
         super(start, end);
     }
 
@@ -25,7 +25,7 @@ public class SolverBFSImpl extends Solver {
             int row = current.coordinate().row();
             int col = current.coordinate().col();
 
-            if (maze.isInvalidCoordinate(row, col)) {
+            if (maze.isInvalidCoordinate(row, col) || maze.isVisitedCoordinate(row, col)) {
                 continue;
             }
             maze.getGrid()[row][col].setVisited(true);
@@ -35,15 +35,15 @@ public class SolverBFSImpl extends Solver {
             }
 
             int dirInx = 0;
-            for (Coordinate coordinate : cordForCheckBorder) {
+            for (Coordinate coordinate : CORD_FOR_CHECK_BORDER) {
                 int biasRow = coordinate.row();
                 int biasCol = coordinate.col();
                 TypeCell forbiddenType = biasCol == 0 ? TypeCell.FLOOR : TypeCell.WALL;
                 if (maze.getGrid()[row + biasRow][col + biasCol].getType() != forbiddenType) {
                     LinkedCoordinate newCoordinate = new LinkedCoordinate(
                         new Coordinate(
-                            row + directions[dirInx][0],
-                            col + directions[dirInx][1]
+                            row + DIRECTIONS[dirInx][0],
+                            col + DIRECTIONS[dirInx][1]
                         ),
                         current
                     );

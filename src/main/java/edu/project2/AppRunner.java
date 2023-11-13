@@ -2,21 +2,21 @@ package edu.project2;
 
 import edu.project2.cells.Coordinate;
 import edu.project2.generator.GeneratorByEllerAlgorithm;
-import edu.project2.solver.SolverBFSImpl;
-import edu.project2.solver.SolverDFSImpl;
+import edu.project2.solver.Solver;
+import edu.project2.solver.SolverBFS;
+import edu.project2.solver.SolverDFS;
 import java.util.List;
 import java.util.Scanner;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 @SuppressWarnings("RegexpSinglelineJava")
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AppRunner {
     private static final int MAX_SIZE = 30;
     private static final String AXIS_X = "По оси X: ";
     private static final String AXIS_Y = "По оси Y: ";
     private static final int ALL_SOLUTIONS_METHODS = 3;
-
-    private AppRunner() {
-
-    }
 
     @SuppressWarnings("UncommentedMain")
     public static void main(String[] args) {
@@ -26,7 +26,7 @@ public class AppRunner {
         int startY = 0;
         int endX = 0;
         int endY = 0;
-        int typeSolver = 0;
+        int solverType = 0;
 
         Scanner in = new Scanner(System.in);
         while (isNegative(row) || isInvalidSize(row)) {
@@ -62,11 +62,11 @@ public class AppRunner {
             endY = in.nextInt();
         }
 
-        while (isInvalidTypeSolver(typeSolver)) {
+        while (isInvalidTypeSolver(solverType)) {
             System.out.println("Выберите метод решения лабиринта:\t1 - DFS;\t2 - BFS;\t3-Оба");
-            typeSolver = in.nextInt();
+            solverType = in.nextInt();
         }
-        switch (typeSolver) {
+        switch (solverType) {
             case 1 -> {
                 solveDFS(maze, startX, startY, endX, endY);
                 break;
@@ -84,13 +84,13 @@ public class AppRunner {
     }
 
     private static void solveDFS(Maze maze, int startX, int startY, int endX, int endY) {
-        SolverDFSImpl solverDFS = new SolverDFSImpl(new Coordinate(startX, startY), new Coordinate(endX, endY));
+        Solver solverDFS = new SolverDFS(new Coordinate(startX, startY), new Coordinate(endX, endY));
         List<Coordinate> path = solverDFS.solve(maze);
         Printer.printMazeWithPath(maze, path);
     }
 
     private static void solveBFS(Maze maze, int startX, int startY, int endX, int endY) {
-        SolverBFSImpl solverBFS = new SolverBFSImpl(new Coordinate(startX, startY), new Coordinate(endX, endY));
+        Solver solverBFS = new SolverBFS(new Coordinate(startX, startY), new Coordinate(endX, endY));
         List<Coordinate> path = solverBFS.solve(maze);
         Printer.printMazeWithPath(maze, path);
     }

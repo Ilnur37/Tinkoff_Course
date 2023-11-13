@@ -7,10 +7,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class SolverDFSImpl extends Solver {
+public class SolverDFS extends Solver {
     private final List<Coordinate> path = new ArrayList<>();
 
-    public SolverDFSImpl(Coordinate start, Coordinate end) {
+    public SolverDFS(Coordinate start, Coordinate end) {
         super(start, end);
     }
 
@@ -24,7 +24,7 @@ public class SolverDFSImpl extends Solver {
     }
 
     private boolean explore(Maze maze, int row, int col) {
-        if (maze.isInvalidCoordinate(row, col)) {
+        if (maze.isInvalidCoordinate(row, col) || maze.isVisitedCoordinate(row, col)) {
             return false;
         }
 
@@ -35,12 +35,12 @@ public class SolverDFSImpl extends Solver {
         }
 
         int dirInx = 0;
-        for (Coordinate coordinate : cordForCheckBorder) {
+        for (Coordinate coordinate : CORD_FOR_CHECK_BORDER) {
             int biasRow = coordinate.row();
             int biasCol = coordinate.col();
             TypeCell forbiddenType = biasCol == 0 ? TypeCell.FLOOR : TypeCell.WALL;
             if (maze.getGrid()[row + biasRow][col + biasCol].getType() != forbiddenType) {
-                if (explore(maze, row + directions[dirInx][0], col + directions[dirInx][1])) {
+                if (explore(maze, row + DIRECTIONS[dirInx][0], col + DIRECTIONS[dirInx][1])) {
                     return true;
                 }
             }
