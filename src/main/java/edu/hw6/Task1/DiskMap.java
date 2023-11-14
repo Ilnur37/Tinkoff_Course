@@ -13,19 +13,23 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class DiskMap implements Map<String, String> {
-    private final String path = "src/main/resources/hw6/Task1/";
+    private final static Logger LOGGER = LogManager.getLogger();
+    private final static String FILE_WRITER_EXCEPTION = "Failed to start reading file. File not found";
+    private final String path = "src/test/resources/hw6/task1/";
     private final String txt = ".txt";
     private final String separator = " : ";
     private final File directory;
     private final Set<String> nameFiles = new HashSet<>();
 
-    public DiskMap() throws IOException {
+    public DiskMap() {
         directory = new File(path.substring(0, path.length() - 1));
-        directory.createNewFile();
+        directory.mkdir();
     }
 
     private void saveValue(String key, String value) {
@@ -38,7 +42,7 @@ public class DiskMap implements Map<String, String> {
             file.deleteOnExit();
             nameFiles.add(key);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.info(FILE_WRITER_EXCEPTION);
         }
     }
 
@@ -49,7 +53,7 @@ public class DiskMap implements Map<String, String> {
             writer.write(key + separator + value);
             writer.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.info(FILE_WRITER_EXCEPTION);
         }
     }
 
