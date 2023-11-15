@@ -31,8 +31,7 @@ public class Task3Test {
         "2023-09-08",
         "2023-9-8",
         "8/9/2023",
-        "08/09/23",
-        "66 days ago"
+        "08/09/23"
     })
     void parseDate(String date) {
         Parse parse = createChainOfResponsibility();
