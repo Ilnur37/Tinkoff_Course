@@ -1,6 +1,6 @@
 package edu.hw6;
 
-import edu.hw6.Task1.DiskMap;
+import edu.hw6.task1.DiskMap;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;

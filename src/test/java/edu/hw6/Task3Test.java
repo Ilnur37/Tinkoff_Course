@@ -1,6 +1,6 @@
 package edu.hw6;
 
-import edu.hw6.Task3.AbstractFilter;
+import edu.hw6.task3.AbstractFilter;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -38,11 +38,11 @@ public class Task3Test {
     @Test
     @DisplayName("largerThan")
     void filter2() throws IOException {
-        DirectoryStream.Filter<Path> filter = AbstractFilter.largerThan(1);
+        DirectoryStream.Filter<Path> filter = AbstractFilter.largerThan(10000);
 
         List<Path> trueFiles = new ArrayList<>();
-        trueFiles.add(Path.of(dir + "/abab.txt"));
-        trueFiles.add(Path.of(dir + "/qwqw.txt"));
+        trueFiles.add(Path.of(dir + "/abab.png"));
+        trueFiles.add(Path.of(dir + "/qwqw.png"));
 
         List<Path> files = new ArrayList<>();
         try (DirectoryStream<Path> entries = Files.newDirectoryStream(dir, filter)) {
@@ -66,6 +66,8 @@ public class Task3Test {
         }
         Assertions.assertEquals(trueFiles, files);
     }
+
+
 
     @Test
     @DisplayName("regexContains")
@@ -94,7 +96,24 @@ public class Task3Test {
         );
 
         List<Path> trueFiles = new ArrayList<>();
+        trueFiles.add(Path.of(dir + "/qwqw.png"));
         trueFiles.add(Path.of(dir + "/qwqw.txt"));
+
+        List<Path> files = new ArrayList<>();
+        try (DirectoryStream<Path> entries = Files.newDirectoryStream(dir, filter)) {
+            entries.forEach(files::add);
+        }
+        Assertions.assertEquals(trueFiles, files);
+    }
+
+    @Test
+    @DisplayName("magicNumber")
+    void filter6() throws IOException {
+        DirectoryStream.Filter<Path> filter = AbstractFilter.magicNumber(0x89, 'P', 'N', 'G');
+
+        List<Path> trueFiles = new ArrayList<>();
+        trueFiles.add(Path.of(dir + "/abab.png"));
+        trueFiles.add(Path.of(dir + "/qwqw.png"));
 
         List<Path> files = new ArrayList<>();
         try (DirectoryStream<Path> entries = Files.newDirectoryStream(dir, filter)) {
