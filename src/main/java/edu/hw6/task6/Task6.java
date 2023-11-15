@@ -10,6 +10,11 @@ public class Task6 {
     private final static Logger LOGGER = LogManager.getLogger();
     private final static int START_PORT = 0;
     private final static int END_PORT = 49151;
+    private final static int PERIOD =  1000;
+
+    private Task6() {
+
+    }
 
     public static void scanPorts() {
         int emptyPort = 1;
@@ -20,7 +25,7 @@ public class Task6 {
             str.append("Port ");
             if (isPortAvailable(port)) {
                 emptyPort++;
-                if (emptyPort % 1000 == 0) {
+                if (emptyPort % PERIOD == 0) {
                     str.append(port).append(" is free");
                     LOGGER.info(str.toString());
                     emptyPort = 1;
@@ -48,9 +53,5 @@ public class Task6 {
         } else {
             return " : " + PortsService.MAP.get(port);
         }
-    }
-
-    public static void main(String[] args) {
-        scanPorts();
     }
 }
