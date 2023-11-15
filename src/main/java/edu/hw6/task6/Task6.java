@@ -30,7 +30,6 @@ public class Task6 {
                     LOGGER.info(str.toString());
                     emptyPort = 1;
                 }
-
             } else {
                 str.append(port).append(" is occupied ").append(getServiceName(port));
                 LOGGER.info(str.toString());
