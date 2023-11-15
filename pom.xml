@@ -44,6 +44,8 @@
         <maven-site-plugin.version>4.0.0-M9</maven-site-plugin.version>
 
         <jacoco-maven-plugin.version>0.8.10</jacoco-maven-plugin.version>
+
+        <lombok.version>1.18.30</lombok.version>
     </properties>
 
     <dependencyManagement>
