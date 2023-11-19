@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 public class Task3Test {
     Path dir = Path.of("src/test/resources/hw6/task3");
 
-    /*@Test
+    @Test
     @DisplayName("regularFile && readable")
     void filter1() throws IOException {
         DirectoryStream.Filter<Path> filter = AbstractFilter.and(
@@ -32,7 +32,8 @@ public class Task3Test {
         try (DirectoryStream<Path> entries = Files.newDirectoryStream(dir, filter)) {
             entries.forEach(files::add);
         }
-        Assertions.assertEquals(trueFiles, files);
+        Assertions.assertTrue(files.size() == trueFiles.size()
+            && files.containsAll(trueFiles) && trueFiles.containsAll(files));
     }
 
     @Test
@@ -48,7 +49,8 @@ public class Task3Test {
         try (DirectoryStream<Path> entries = Files.newDirectoryStream(dir, filter)) {
             entries.forEach(files::add);
         }
-        Assertions.assertEquals(trueFiles, files);
+        Assertions.assertTrue(files.size() == trueFiles.size()
+            && files.containsAll(trueFiles) && trueFiles.containsAll(files));
     }
 
     @Test
@@ -64,7 +66,8 @@ public class Task3Test {
         try (DirectoryStream<Path> entries = Files.newDirectoryStream(dir, filter)) {
             entries.forEach(files::add);
         }
-        Assertions.assertEquals(trueFiles, files);
+        Assertions.assertTrue(files.size() == trueFiles.size()
+            && files.containsAll(trueFiles) && trueFiles.containsAll(files));
     }
 
 
@@ -82,7 +85,8 @@ public class Task3Test {
         try (DirectoryStream<Path> entries = Files.newDirectoryStream(dir, filter)) {
             entries.forEach(files::add);
         }
-        Assertions.assertEquals(trueFiles, files);
+        Assertions.assertTrue(files.size() == trueFiles.size()
+            && files.containsAll(trueFiles) && trueFiles.containsAll(files));
     }
 
     @Test
@@ -103,7 +107,8 @@ public class Task3Test {
         try (DirectoryStream<Path> entries = Files.newDirectoryStream(dir, filter)) {
             entries.forEach(files::add);
         }
-        Assertions.assertEquals(trueFiles, files);
+        Assertions.assertTrue(files.size() == trueFiles.size()
+            && files.containsAll(trueFiles) && trueFiles.containsAll(files));
     }
 
     @Test
@@ -119,6 +124,7 @@ public class Task3Test {
         try (DirectoryStream<Path> entries = Files.newDirectoryStream(dir, filter)) {
             entries.forEach(files::add);
         }
-        Assertions.assertEquals(trueFiles, files);
-    }*/
+        Assertions.assertTrue(files.size() == trueFiles.size()
+            && files.containsAll(trueFiles) && trueFiles.containsAll(files));
+    }
 }
