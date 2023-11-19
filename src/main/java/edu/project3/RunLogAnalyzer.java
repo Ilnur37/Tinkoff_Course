@@ -39,10 +39,10 @@ public class RunLogAnalyzer {
     public static void main(String[] args) throws IOException, ParseException, InterruptedException {
         int idx = 0;
         int countArgs = args.length;
-        if (!Objects.equals(args[idx], PATH_ARG)
-            || countArgs < MIN_SIZE_ARGS
+        if (countArgs < MIN_SIZE_ARGS
             || countArgs > MAX_SIZE_ARGS
             || countArgs % 2 != 0
+            || !Objects.equals(args[idx], PATH_ARG)
         ) {
             throw ILLEGAL_ARGUMENT_EXCEPTION;
         }
@@ -58,16 +58,12 @@ public class RunLogAnalyzer {
             List<Path> logFiles = logAnalyzer.findFiles(sourceOfLogs);
             logAnalyzer.analyzeFile(logFiles, fromDate, toDate, formatOutput);
         }
-
-        /*LogAnalyzer logAnalyzer = new LogAnalyzer();
-        List<Path> logFiles = logAnalyzer.findFiles("**.txt");
-        logAnalyzer.analyzeFile(logFiles, LocalDate.of(2012, 1,1), LocalDate.of(2023, 1,1), TypeOutputFile.MARKDOWN);*/
     }
 
     private static void setParameters(String[] args) {
         String format = null;
         int idx = 2;
-        while (idx <= args.length) {
+        while (idx < args.length) {
             switch (args[idx]) {
                 case FROM_ARG -> {
                     checkingForReEnteringParameter(fromDate);

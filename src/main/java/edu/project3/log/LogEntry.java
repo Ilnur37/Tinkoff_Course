@@ -36,7 +36,7 @@ public class LogEntry {
             this.protocol = "HTTP/" + matcher.group(5);
             this.responseCode = Integer.parseInt(matcher.group(6));
             this.responseSize = Long.parseLong(matcher.group(7));
-            this.userAgent = matcher.group(8);
+            this.userAgent = "\"" + matcher.group(9) + "\"";
         } else {
             throw new ParseException("Log entry does not match expected pattern", 0);
         }

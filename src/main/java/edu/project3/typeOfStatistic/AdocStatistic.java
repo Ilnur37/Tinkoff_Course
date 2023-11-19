@@ -38,7 +38,7 @@ public class AdocStatistic implements Statistic {
     }
 
     @Override
-    public String makeRequestedResourcesFrequency(Map<String, Integer> endpointMap) {
+    public String makeRequestResourcesFrequency(Map<String, Integer> endpointMap) {
         StringBuilder requestedResourcesFrequency = new StringBuilder();
 
         requestedResourcesFrequency
@@ -93,5 +93,24 @@ public class AdocStatistic implements Statistic {
         }
         requestsPerDayFrequency.append(TABLE_BORDER_ADOC);
         return requestsPerDayFrequency.toString();
+    }
+
+    @Override
+    public String makeHttpUserAgentFrequency(Map<String, Integer> httpUserAgent) {
+        StringBuilder httpUserAgentFrequency = new StringBuilder();
+
+        httpUserAgentFrequency
+            .append("== httpUserAgent\n")
+            .append(TABLE_BORDER_ADOC)
+            .append("|Агент|Количество\n");
+
+        for (Map.Entry<String, Integer> entry : httpUserAgent.entrySet()) {
+            httpUserAgentFrequency
+                .append(VERTICAL_SLASH).append(entry.getKey())
+                .append(VERTICAL_SLASH).append(entry.getValue())
+                .append("\n");
+        }
+        httpUserAgentFrequency.append(TABLE_BORDER_ADOC);
+        return httpUserAgentFrequency.toString();
     }
 }

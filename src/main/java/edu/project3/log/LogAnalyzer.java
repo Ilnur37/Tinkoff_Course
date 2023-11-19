@@ -28,6 +28,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.TreeMap;
 
 public class LogAnalyzer {
@@ -36,9 +37,14 @@ public class LogAnalyzer {
     private int countResponse = 0;
     private LocalDate fromDate;
     private LocalDate toDate;
+    private LocalDate tempFromDate;
+    private LocalDate tempToDate;
+    private final LocalDate fromDateDefault = LocalDate.MIN;
+    private final LocalDate toDateDefault = LocalDate.MAX;
     private final Map<String, Integer> responseCodeMap = new HashMap<>();
     private final Map<String, Integer> endpointMap = new HashMap<>();
     private final Map<LocalDate, Integer> requestsPerDayMap = new TreeMap<>();
+    private final Map<String, Integer> httpUserAgent = new HashMap<>();
 
     public List<Path> findFiles(String pattern) throws IOException {
         List<Path> matchesList = new ArrayList<>();
@@ -60,8 +66,8 @@ public class LogAnalyzer {
     }
 
     public void analyzeFile(List<Path> logFiles, LocalDate fromDate, LocalDate toDate, TypeOutputFile typeFile) {
-        this.fromDate = fromDate;
-        this.toDate = toDate;
+        firstInitializationDate(fromDate, toDate);
+
         for (Path path : logFiles) {
             try (BufferedReader reader = Files.newBufferedReader(path)) {
                 String line;
@@ -74,6 +80,7 @@ public class LogAnalyzer {
         }
 
         averageResponseSize = (fullResponseSize / countResponse);
+        setDate();
         writeStatistic(
             typeFile,
             logFiles.stream().map(Path::toString).toList()
@@ -82,9 +89,8 @@ public class LogAnalyzer {
 
     public void analyzeULR(String url, LocalDate fromDate, LocalDate toDate, TypeOutputFile typeFile)
         throws IOException, InterruptedException, ParseException {
+        firstInitializationDate(fromDate, toDate);
 
-        this.fromDate = fromDate;
-        this.toDate = toDate;
         HttpClient httpClient = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
             .uri(URI.create(url))
@@ -97,17 +103,26 @@ public class LogAnalyzer {
             analyzeLogLine(line);
         }
         averageResponseSize = (fullResponseSize / countResponse);
+        setDate();
         writeStatistic(
             typeFile,
             Collections.singletonList(url)
         );
     }
 
+    private void firstInitializationDate(LocalDate fromDate, LocalDate toDate){
+        this.fromDate = Objects.requireNonNullElse(fromDate, fromDateDefault);
+        this.toDate = Objects.requireNonNullElse(toDate, toDateDefault);
+    }
+
     private void analyzeLogLine(String line) throws ParseException {
         LogEntry log = new LogEntry(line);
-        if (log.getDateTime().toLocalDate().isEqual(toDate) || log.getDateTime().toLocalDate().isEqual(fromDate)
+        LocalDate currDate = log.getDateTime().toLocalDate();
+
+        if (currDate.isEqual(toDate) || currDate.isEqual(fromDate)
             ||
-            (log.getDateTime().toLocalDate().isAfter(fromDate) && log.getDateTime().toLocalDate().isBefore(toDate))) {
+            (currDate.isAfter(fromDate) && currDate.isBefore(toDate))
+        ) {
             ++countResponse;
             fullResponseSize += log.getResponseSize();
 
@@ -130,6 +145,36 @@ public class LogAnalyzer {
             } else {
                 requestsPerDayMap.put(date, 1);
             }
+
+            if (httpUserAgent.containsKey(log.getUserAgent())) {
+                httpUserAgent.put(log.getUserAgent(), httpUserAgent.get(log.getUserAgent()) + 1);
+            } else {
+                httpUserAgent.put(log.getUserAgent(), 1);
+            }
+
+            if (tempFromDate == null) {
+                tempFromDate = currDate;
+            } else {
+                if (currDate.isBefore(tempFromDate)) {
+                    tempFromDate = currDate;
+                }
+            }
+            if (tempToDate == null) {
+                tempToDate = currDate;
+            } else {
+                if (currDate.isAfter(tempToDate)) {
+                    tempToDate = currDate;
+                }
+            }
+        }
+    }
+
+    private void setDate() {
+        if (fromDate == fromDateDefault) {
+            fromDate = tempFromDate;
+        }
+        if (toDate == toDateDefault) {
+            toDate = tempToDate;
         }
     }
 
@@ -146,17 +191,47 @@ public class LogAnalyzer {
 
         String generalInformation =
             statistic.makeGeneralInformation(logFiles, fromDate, toDate, countResponse, averageResponseSize);
-        String requestedResourcesFrequency = statistic.makeRequestedResourcesFrequency(endpointMap);
+        String requestResourcesFrequency = statistic.makeRequestResourcesFrequency(endpointMap);
         String responseCodeFrequency = statistic.makeResponseCodeFrequency(responseCodeMap);
         String requestsPerDayFrequency = statistic.makeRequestsPerDayFrequency(requestsPerDayMap);
+        String httpUserAgentFrequency = statistic.makeHttpUserAgentFrequency(httpUserAgent);
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
             writer.write(generalInformation);
-            writer.write(requestedResourcesFrequency);
+            writer.write(requestResourcesFrequency);
             writer.write(responseCodeFrequency);
             writer.write(requestsPerDayFrequency);
+            writer.write(httpUserAgentFrequency);
         } catch (IOException e) {
             throw new RuntimeException("Error reading file!");
         }
+    }
+
+    public long getAverageResponseSize() {
+        return averageResponseSize;
+    }
+
+    public int getCountResponse() {
+        return countResponse;
+    }
+
+    public LocalDate getFromDate() {
+        return fromDate;
+    }
+
+    public LocalDate getToDate() {
+        return toDate;
+    }
+
+    public Map<String, Integer> getResponseCodeMap() {
+        return responseCodeMap;
+    }
+
+    public Map<String, Integer> getEndpointMap() {
+        return endpointMap;
+    }
+
+    public Map<LocalDate, Integer> getRequestsPerDayMap() {
+        return requestsPerDayMap;
     }
 }

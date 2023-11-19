@@ -38,7 +38,7 @@ public class MdStatistic implements Statistic {
     }
 
     @Override
-    public String makeRequestedResourcesFrequency(Map<String, Integer> endpointMap) {
+    public String makeRequestResourcesFrequency(Map<String, Integer> endpointMap) {
         StringBuilder requestedResourcesFrequency = new StringBuilder("""
             # Запрашиваемые ресурсы
             |Ресурс|Количество|
@@ -84,5 +84,21 @@ public class MdStatistic implements Statistic {
                 .append(VERTICAL_SLASH).append("\n");
         }
         return requestsPerDayFrequency.toString();
+    }
+
+    @Override
+    public String makeHttpUserAgentFrequency(Map<String, Integer> httpUserAgent) {
+        StringBuilder httpUserAgentFrequency = new StringBuilder("""
+            # httpUserAgent
+            |Агент|Количество|
+            |---|---|
+            """);
+        for (Map.Entry<String, Integer> entry : httpUserAgent.entrySet()) {
+            httpUserAgentFrequency
+                .append(VERTICAL_SLASH).append(entry.getKey())
+                .append(VERTICAL_SLASH).append(entry.getValue())
+                .append(VERTICAL_SLASH).append("\n");
+        }
+        return httpUserAgentFrequency.toString();
     }
 }

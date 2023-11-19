@@ -20,9 +20,11 @@ public interface Statistic {
 
     String getPathFiles(List<String> logFiles);
 
-    String makeRequestedResourcesFrequency(Map<String, Integer> endpointMap);
+    String makeRequestResourcesFrequency(Map<String, Integer> endpointMap);
 
     String makeResponseCodeFrequency(Map<String, Integer> responseCodeMap);
 
     String makeRequestsPerDayFrequency(Map<LocalDate, Integer> requestsPerDayMap);
+
+    String makeHttpUserAgentFrequency(Map<String, Integer> httpUserAgent);
 }
