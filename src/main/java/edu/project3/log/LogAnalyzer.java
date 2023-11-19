@@ -110,7 +110,7 @@ public class LogAnalyzer {
         );
     }
 
-    private void firstInitializationDate(LocalDate fromDate, LocalDate toDate){
+    private void firstInitializationDate(LocalDate fromDate, LocalDate toDate) {
         this.fromDate = Objects.requireNonNullElse(fromDate, fromDateDefault);
         this.toDate = Objects.requireNonNullElse(toDate, toDateDefault);
     }

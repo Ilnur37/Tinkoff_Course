@@ -22,34 +22,40 @@ public class LogTest {
     @DisplayName("Поиск файлов '*.txt'")
     void findFiles1() throws IOException {
         LogAnalyzer logAnalyzer = new LogAnalyzer();
-        List<Path> files = new ArrayList<>();
-        files.add(Path.of("src/main/resources/project3/All Logs/Edu log2.txt"));
-        files.add(Path.of("src/main/resources/project3/All Logs/Other log.txt"));
-        Assertions.assertEquals(files, logAnalyzer.findFiles("*.txt"));
+        List<Path> files = logAnalyzer.findFiles("*.txt");
+        List<Path> trueFiles = new ArrayList<>();
+        trueFiles.add(Path.of("src/main/resources/project3/All Logs/Edu log2.txt"));
+        trueFiles.add(Path.of("src/main/resources/project3/All Logs/Other log.txt"));
+        Assertions.assertTrue(files.size() == trueFiles.size()
+            && files.containsAll(trueFiles) && trueFiles.containsAll(files));
     }
 
     @Test
     @DisplayName("Поиск файлов '**.txt'")
     void findFiles2() throws IOException {
         LogAnalyzer logAnalyzer = new LogAnalyzer();
-        List<Path> files = new ArrayList<>();
-        files.add(Path.of("src/main/resources/project3/All Logs/Edu log2.txt"));
-        files.add(Path.of("src/main/resources/project3/All Logs/Other log.txt"));
-        files.add(Path.of("src/main/resources/project3/All Logs/server1/Bank log1.txt"));
-        files.add(Path.of("src/main/resources/project3/All Logs/server2/Bank log2.txt"));
-        files.add(Path.of("src/main/resources/project3/All Logs/server2/Edu log1.txt"));
-        Assertions.assertEquals(files, logAnalyzer.findFiles("**.txt"));
+        List<Path> files = logAnalyzer.findFiles("**.txt");
+        List<Path> trueFiles = new ArrayList<>();
+        trueFiles.add(Path.of("src/main/resources/project3/All Logs/Edu log2.txt"));
+        trueFiles.add(Path.of("src/main/resources/project3/All Logs/Other log.txt"));
+        trueFiles.add(Path.of("src/main/resources/project3/All Logs/server1/Bank log1.txt"));
+        trueFiles.add(Path.of("src/main/resources/project3/All Logs/server2/Bank log2.txt"));
+        trueFiles.add(Path.of("src/main/resources/project3/All Logs/server2/Edu log1.txt"));
+        Assertions.assertTrue(files.size() == trueFiles.size()
+            && files.containsAll(trueFiles) && trueFiles.containsAll(files));
     }
 
     @Test
     @DisplayName("Поиск файлов '*/*.txt'")
     void findFiles3() throws IOException {
         LogAnalyzer logAnalyzer = new LogAnalyzer();
-        List<Path> files = new ArrayList<>();
-        files.add(Path.of("src/main/resources/project3/All Logs/server1/Bank log1.txt"));
-        files.add(Path.of("src/main/resources/project3/All Logs/server2/Bank log2.txt"));
-        files.add(Path.of("src/main/resources/project3/All Logs/server2/Edu log1.txt"));
-        Assertions.assertEquals(files, logAnalyzer.findFiles("*/*.txt"));
+        List<Path> files = logAnalyzer.findFiles("*/*.txt");
+        List<Path> trueFiles = new ArrayList<>();
+        trueFiles.add(Path.of("src/main/resources/project3/All Logs/server1/Bank log1.txt"));
+        trueFiles.add(Path.of("src/main/resources/project3/All Logs/server2/Bank log2.txt"));
+        trueFiles.add(Path.of("src/main/resources/project3/All Logs/server2/Edu log1.txt"));
+        Assertions.assertTrue(files.size() == trueFiles.size()
+            && files.containsAll(trueFiles) && trueFiles.containsAll(files));
     }
 
     @Test
