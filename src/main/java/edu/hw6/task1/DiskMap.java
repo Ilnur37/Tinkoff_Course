@@ -2,9 +2,11 @@ package edu.hw6.task1;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.channels.FileChannel;
+import java.nio.channels.FileLock;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -34,10 +36,10 @@ public class DiskMap implements Map<String, String> {
 
     private void saveValue(String key, String value) {
         File file = new File(path + key + txt);
-        try {
-            FileWriter writer = new FileWriter(file);
-            writer.write(key + separator + value);
-            writer.close();
+        try (FileOutputStream fileOutputStream = new FileOutputStream(path + key + txt);
+             FileChannel channel = fileOutputStream.getChannel();
+             FileLock lock = channel.lock()) {
+            fileOutputStream.write((key + separator + value).getBytes());
             file.createNewFile();
             file.deleteOnExit();
             nameFiles.add(key);
@@ -48,10 +50,10 @@ public class DiskMap implements Map<String, String> {
 
     private void updateValue(String key, String value) {
         File file = new File(path + key + txt);
-        try {
-            FileWriter writer = new FileWriter(file);
-            writer.write(key + separator + value);
-            writer.close();
+        try (FileOutputStream fileOutputStream = new FileOutputStream(path + key + txt);
+             FileChannel channel = fileOutputStream.getChannel();
+             FileLock lock = channel.lock()) {
+            fileOutputStream.write((key + separator + value).getBytes());
         } catch (IOException e) {
             LOGGER.info(FILE_WRITER_EXCEPTION);
         }

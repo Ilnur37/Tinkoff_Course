@@ -32,5 +32,11 @@ public class Task2Test {
             () -> Assertions.assertTrue(Files.exists(pathCopyDir)),
             () -> Assertions.assertTrue(Files.exists(pathCopyDir2))
         );
+
+        Files.delete(pathCopy);
+        Files.delete(pathCopy2);
+        Files.delete(pathCopy3);
+        Files.delete(pathCopyDir);
+        Files.delete(pathCopyDir2);
     }
 }

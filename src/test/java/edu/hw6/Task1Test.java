@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 public class Task1Test {
     @Test
     @DisplayName("get & containsKey")
-    void diskMap1() throws IOException {
+    void diskMap1() {
         DiskMap diskMap = new DiskMap();
         diskMap.put("aa", "aaa");
         diskMap.put("bb", "bbb");
@@ -33,7 +33,7 @@ public class Task1Test {
 
     @Test
     @DisplayName("containsValue & containsKey")
-    void diskMap2() throws IOException {
+    void diskMap2() {
         DiskMap diskMap = new DiskMap();
         diskMap.put("aa", "aaa");
         diskMap.put("bb", "bbb");
@@ -64,7 +64,7 @@ public class Task1Test {
 
     @Test
     @DisplayName("remove")
-    void diskMap3() throws IOException {
+    void diskMap3() {
         DiskMap diskMap = new DiskMap();
         diskMap.put("aa", "aaa");
         diskMap.put("bb", "bbb");
@@ -86,7 +86,7 @@ public class Task1Test {
 
     @Test
     @DisplayName("clear")
-    void diskMap4() throws IOException {
+    void diskMap4() {
         DiskMap diskMap = new DiskMap();
         diskMap.put("aa", "aaa");
         diskMap.put("bb", "bbb");
@@ -100,7 +100,7 @@ public class Task1Test {
 
     @Test
     @DisplayName("keySet & values")
-    void diskMap5() throws IOException {
+    void diskMap5() {
         DiskMap diskMap = new DiskMap();
         Set<String> keys = new HashSet<>(List.of("aa", "bb", "cc"));
         Collection<String> values = new HashSet<>(List.of("aaa", "bbb", "ccc"));
@@ -116,7 +116,7 @@ public class Task1Test {
 
     @Test
     @DisplayName("keySet & values")
-    void diskMap6() throws IOException {
+    void diskMap6() {
         DiskMap diskMap = new DiskMap();
         Map<String, String> map = new HashMap<>();
         diskMap.put("aa", "aaa");
