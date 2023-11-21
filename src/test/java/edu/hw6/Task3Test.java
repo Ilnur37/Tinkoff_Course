@@ -12,7 +12,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class Task3Test {
-    Path dir = Path.of("src/test/resources/hw6/task3");
+    Path dir = Path.of("src\\test\\resources\\hw6\\task3");
 
     @Test
     @DisplayName("regularFile && readable")
@@ -23,10 +23,10 @@ public class Task3Test {
         );
 
         List<Path> trueFiles = new ArrayList<>();
-        trueFiles.add(Path.of(dir + "/abab.png"));
-        trueFiles.add(Path.of(dir + "/abab.txt"));
-        trueFiles.add(Path.of(dir + "/qwqw.png"));
-        trueFiles.add(Path.of(dir + "/qwqw.txt"));
+        trueFiles.add(Path.of(dir + "\\abab.png"));
+        trueFiles.add(Path.of(dir + "\\abab.txt"));
+        trueFiles.add(Path.of(dir + "\\qwqw.png"));
+        trueFiles.add(Path.of(dir + "\\qwqw.txt"));
 
         List<Path> files = new ArrayList<>();
         try (DirectoryStream<Path> entries = Files.newDirectoryStream(dir, filter)) {
@@ -43,8 +43,8 @@ public class Task3Test {
         DirectoryStream.Filter<Path> filter = AbstractFilter.largerThan(10000);
 
         List<Path> trueFiles = new ArrayList<>();
-        trueFiles.add(Path.of(dir + "/abab.png"));
-        trueFiles.add(Path.of(dir + "/qwqw.png"));
+        trueFiles.add(Path.of(dir + "\\abab.png"));
+        trueFiles.add(Path.of(dir + "\\qwqw.png"));
 
         List<Path> files = new ArrayList<>();
         try (DirectoryStream<Path> entries = Files.newDirectoryStream(dir, filter)) {
@@ -61,8 +61,8 @@ public class Task3Test {
         DirectoryStream.Filter<Path> filter = AbstractFilter.globMatches("*.png");
 
         List<Path> trueFiles = new ArrayList<>();
-        trueFiles.add(Path.of(dir + "/abab.png"));
-        trueFiles.add(Path.of(dir + "/qwqw.png"));
+        trueFiles.add(Path.of(dir + "\\abab.png"));
+        trueFiles.add(Path.of(dir + "\\qwqw.png"));
 
         List<Path> files = new ArrayList<>();
         try (DirectoryStream<Path> entries = Files.newDirectoryStream(dir, filter)) {
@@ -81,8 +81,8 @@ public class Task3Test {
         DirectoryStream.Filter<Path> filter = AbstractFilter.regexContains("qw");
 
         List<Path> trueFiles = new ArrayList<>();
-        trueFiles.add(Path.of(dir + "/qwqw.png"));
-        trueFiles.add(Path.of(dir + "/qwqw.txt"));
+        trueFiles.add(Path.of(dir + "\\qwqw.png"));
+        trueFiles.add(Path.of(dir + "\\qwqw.txt"));
 
         List<Path> files = new ArrayList<>();
         try (DirectoryStream<Path> entries = Files.newDirectoryStream(dir, filter)) {
@@ -104,8 +104,8 @@ public class Task3Test {
         );
 
         List<Path> trueFiles = new ArrayList<>();
-        trueFiles.add(Path.of(dir + "/qwqw.png"));
-        trueFiles.add(Path.of(dir + "/qwqw.txt"));
+        trueFiles.add(Path.of(dir + "\\qwqw.png"));
+        trueFiles.add(Path.of(dir + "\\qwqw.txt"));
 
         List<Path> files = new ArrayList<>();
         try (DirectoryStream<Path> entries = Files.newDirectoryStream(dir, filter)) {
@@ -122,8 +122,8 @@ public class Task3Test {
         DirectoryStream.Filter<Path> filter = AbstractFilter.magicNumber(0x89, 'P', 'N', 'G');
 
         List<Path> trueFiles = new ArrayList<>();
-        trueFiles.add(Path.of(dir + "/abab.png"));
-        trueFiles.add(Path.of(dir + "/qwqw.png"));
+        trueFiles.add(Path.of(dir + "\\abab.png"));
+        trueFiles.add(Path.of(dir + "\\qwqw.png"));
 
         List<Path> files = new ArrayList<>();
         try (DirectoryStream<Path> entries = Files.newDirectoryStream(dir, filter)) {
