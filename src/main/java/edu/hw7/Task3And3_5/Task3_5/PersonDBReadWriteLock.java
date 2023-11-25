@@ -1,4 +1,4 @@
-package edu.hw7.Task3And3_5.Task4;
+package edu.hw7.Task3And3_5.Task3_5;
 
 import edu.hw7.Task3And3_5.Person;
 import edu.hw7.Task3And3_5.PersonDatabase;

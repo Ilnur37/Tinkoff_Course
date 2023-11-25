@@ -1,12 +1,14 @@
 package edu.hw7.Task4;
 
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicInteger;
+import lombok.experimental.UtilityClass;
 
+@UtilityClass
 public class MonteKarlo {
+    public static final int MULTIPLY = 4;
+
     public static double calculatePi(int n) {
-        long start = System.nanoTime();
         int circlePoints = 0;
 
         for (int i = 0; i < n; i++) {
@@ -17,12 +19,13 @@ public class MonteKarlo {
                 circlePoints++;
             }
         }
-        System.out.println((System.nanoTime() - start) / 1000000);
-        return 4.0 * ((double) circlePoints / n);
+        return MULTIPLY * ((double) circlePoints / n);
     }
 
     public static double calculatePi(int n, int numThreads) {
-        long start = System.nanoTime();
+        if (numThreads < 1) {
+            throw new IllegalArgumentException("The number of threads cannot be less than 1");
+        }
         AtomicInteger circlePoints = new AtomicInteger();
 
         Thread[] threads = new Thread[numThreads];
@@ -54,13 +57,6 @@ public class MonteKarlo {
                 throw new RuntimeException(e);
             }
         }
-        System.out.println((System.nanoTime() - start) / 1000000);
-        return 4.0 * ((double) circlePoints.get() / n);
-    }
-
-    public static void main(String[] args) {
-        int n =  100000000;
-        System.out.println(calculatePi(n));
-        System.out.println(calculatePi(n, 4));
+        return MULTIPLY * ((double) circlePoints.get() / n);
     }
 }

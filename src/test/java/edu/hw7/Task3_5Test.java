@@ -2,9 +2,9 @@ package edu.hw7;
 
 import edu.hw7.Task3And3_5.Person;
 import edu.hw7.Task3And3_5.Task3.PersonDBSynchronized;
+import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Task3_5Test {
     @Test
