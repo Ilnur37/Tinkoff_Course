@@ -5,6 +5,8 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class Task2 {
+    private final static int MAX_NUMBER = 20;
+
     public static long factorial(int n) {
         validateN(n);
         return LongStream.rangeClosed(1, n)
@@ -13,7 +15,7 @@ public class Task2 {
     }
 
     private static void validateN(int n) {
-        if (n > 20) {
+        if (n > MAX_NUMBER) {
             throw new IllegalArgumentException("The program cannot count a value higher than 20!");
         }
         if (n < 0) {

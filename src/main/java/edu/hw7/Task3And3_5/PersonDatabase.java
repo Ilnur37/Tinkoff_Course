@@ -1,4 +1,4 @@
-package edu.hw7.Task3;
+package edu.hw7.Task3And3_5;
 
 import java.util.List;
 import lombok.NonNull;
