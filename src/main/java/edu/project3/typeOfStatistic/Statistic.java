@@ -8,7 +8,7 @@ import java.util.Map;
 public interface Statistic {
     String VERTICAL_SLASH = "|";
     String TABLE_BORDER_ADOC = "|===\n";
-    CodeError CODE_ERROR = new CodeError();
+    Map<Integer, String> CODE_ERROR = CodeError.ERRORS;
 
     String makeGeneralInformation(
         List<String> logFiles,

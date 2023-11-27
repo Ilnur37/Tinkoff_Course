@@ -2,15 +2,16 @@ package edu.project3;
 
 import edu.project3.log.LogAnalyzer;
 import edu.project3.typeOfStatistic.TypeOutputFile;
-import java.io.IOException;
+import edu.project3.utils.CommandLineArg;
 import java.nio.file.Path;
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import lombok.experimental.UtilityClass;
 
+@UtilityClass
 public class RunLogAnalyzer {
     private final static String ADOC_FORMAT = "adoc";
     private final static String MD_FORMAT = "markdown";
@@ -25,44 +26,38 @@ public class RunLogAnalyzer {
     private final static DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private final static IllegalArgumentException ILLEGAL_ARGUMENT_EXCEPTION =
         new IllegalArgumentException("Invalid arguments were passed when running the program!");
-
     private final static TypeOutputFile DEFAULT_TYPE_OUTPUT_FILE = TypeOutputFile.MARKDOWN;
-    private static TypeOutputFile formatOutput;
-    private static LocalDate fromDate = null;
-    private static LocalDate toDate = null;
-
-    private RunLogAnalyzer() {
-
-    }
 
     @SuppressWarnings("UncommentedMain")
-    public static void main(String[] args) throws IOException, ParseException, InterruptedException {
-        int idx = 0;
+    public static void main(String[] args) {
         int countArgs = args.length;
         if (countArgs < MIN_SIZE_ARGS
             || countArgs > MAX_SIZE_ARGS
             || countArgs % 2 != 0
-            || !Objects.equals(args[idx], PATH_ARG)
+            || !Objects.equals(args[0], PATH_ARG)
         ) {
             throw ILLEGAL_ARGUMENT_EXCEPTION;
         }
 
         LogAnalyzer logAnalyzer = new LogAnalyzer();
-        String sourceOfLogs = args[idx + 1];
-
-        setParameters(args);
+        String sourceOfLogs = args[1];
+        CommandLineArg commandLineArg = setParameters(args);
 
         if (sourceOfLogs.startsWith("https://")) {
-            logAnalyzer.analyzeULR(sourceOfLogs, fromDate, toDate, formatOutput);
+            logAnalyzer.analyzeULR(sourceOfLogs, commandLineArg);
         } else {
             List<Path> logFiles = logAnalyzer.findFiles(sourceOfLogs);
-            logAnalyzer.analyzeFile(logFiles, fromDate, toDate, formatOutput);
+            logAnalyzer.analyzeFile(logFiles, commandLineArg);
         }
     }
 
-    private static void setParameters(String[] args) {
+    private static CommandLineArg setParameters(String[] args) {
+        TypeOutputFile formatOutput;
+        LocalDate fromDate = null;
+        LocalDate toDate = null;
         String format = null;
-        int idx = 2;
+        int idx = 2;                //под 0 и 1 индексом хранятся уже обработанные --path и его значение
+
         while (idx < args.length) {
             switch (args[idx]) {
                 case FROM_ARG -> {
@@ -89,6 +84,8 @@ public class RunLogAnalyzer {
         } else {
             formatOutput = setFormatOutput(format);
         }
+
+        return new CommandLineArg(fromDate, toDate, formatOutput);
     }
 
     private static void checkingForReEnteringParameter(Object object) {

@@ -63,7 +63,7 @@ public class MdStatistic implements Statistic {
         for (Map.Entry<String, Integer> entry : responseCodeMap.entrySet()) {
             responseCodeFrequency
                 .append(VERTICAL_SLASH).append(entry.getKey())
-                .append(VERTICAL_SLASH).append(CODE_ERROR.getErrors().get(Integer.parseInt(entry.getKey())))
+                .append(VERTICAL_SLASH).append(CODE_ERROR.get(Integer.parseInt(entry.getKey())))
                 .append(VERTICAL_SLASH).append(entry.getValue())
                 .append(VERTICAL_SLASH).append("\n");
         }

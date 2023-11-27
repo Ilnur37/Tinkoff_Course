@@ -4,6 +4,7 @@ import edu.project3.typeOfStatistic.AdocStatistic;
 import edu.project3.typeOfStatistic.MdStatistic;
 import edu.project3.typeOfStatistic.Statistic;
 import edu.project3.typeOfStatistic.TypeOutputFile;
+import edu.project3.utils.CommandLineArg;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -21,7 +22,6 @@ import java.nio.file.Path;
 import java.nio.file.PathMatcher;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
+import lombok.SneakyThrows;
 
 public class LogAnalyzer {
     private long fullResponseSize = 0;
@@ -45,10 +46,12 @@ public class LogAnalyzer {
     private final Map<String, Integer> endpointMap = new HashMap<>();
     private final Map<LocalDate, Integer> requestsPerDayMap = new TreeMap<>();
     private final Map<String, Integer> httpUserAgent = new HashMap<>();
+    private final HttpClient httpClient = HttpClient.newHttpClient();
+    private final String rootDir = "src/main/resources/project3/All Logs/";
 
-    public List<Path> findFiles(String pattern) throws IOException {
+    @SneakyThrows(IOException.class)
+    public List<Path> findFiles(String pattern) {
         List<Path> matchesList = new ArrayList<>();
-        String rootDir = "src/main/resources/project3/All Logs/";
         PathMatcher matcher =
             FileSystems.getDefault().getPathMatcher("glob:" + rootDir + pattern);
 
@@ -65,16 +68,15 @@ public class LogAnalyzer {
         return matchesList;
     }
 
-    public void analyzeFile(List<Path> logFiles, LocalDate fromDate, LocalDate toDate, TypeOutputFile typeFile) {
-        firstInitializationDate(fromDate, toDate);
-
+    public void analyzeFile(List<Path> logFiles, CommandLineArg commandLineArg) {
+        firstInitializationDate(commandLineArg.getFromDate(), commandLineArg.getToDate());
         for (Path path : logFiles) {
             try (BufferedReader reader = Files.newBufferedReader(path)) {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     analyzeLogLine(line);
                 }
-            } catch (IOException | ParseException e) {
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
@@ -82,18 +84,17 @@ public class LogAnalyzer {
         averageResponseSize = (fullResponseSize / countResponse);
         setDate();
         writeStatistic(
-            typeFile,
+            commandLineArg.getFormatOutput(),
             logFiles.stream().map(Path::toString).toList()
         );
     }
 
-    public void analyzeULR(String url, LocalDate fromDate, LocalDate toDate, TypeOutputFile typeFile)
-        throws IOException, InterruptedException, ParseException {
-        firstInitializationDate(fromDate, toDate);
+    @SneakyThrows({IOException.class, InterruptedException.class})
+    public void analyzeULR(String uri, CommandLineArg commandLineArg) {
+        firstInitializationDate(commandLineArg.getFromDate(), commandLineArg.getToDate());
 
-        HttpClient httpClient = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create(url))
+            .uri(URI.create(uri))
             .build();
         HttpResponse<String> response;
         response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
@@ -105,8 +106,8 @@ public class LogAnalyzer {
         averageResponseSize = (fullResponseSize / countResponse);
         setDate();
         writeStatistic(
-            typeFile,
-            Collections.singletonList(url)
+            commandLineArg.getFormatOutput(),
+            Collections.singletonList(uri)
         );
     }
 
@@ -115,56 +116,55 @@ public class LogAnalyzer {
         this.toDate = Objects.requireNonNullElse(toDate, toDateDefault);
     }
 
-    private void analyzeLogLine(String line) throws ParseException {
+    private void analyzeLogLine(String line) {
         LogEntry log = new LogEntry(line);
         LocalDate currDate = log.getDateTime().toLocalDate();
 
-        if (currDate.isEqual(toDate) || currDate.isEqual(fromDate)
-            ||
-            (currDate.isAfter(fromDate) && currDate.isBefore(toDate))
-        ) {
-            ++countResponse;
-            fullResponseSize += log.getResponseSize();
+        if (!(currDate.isAfter(fromDate) && currDate.isBefore(toDate))) {
+            return;
+        }
 
-            if (endpointMap.containsKey(log.getEndpoint())) {
-                endpointMap.put(log.getEndpoint(), endpointMap.get(log.getEndpoint()) + 1);
-            } else {
-                endpointMap.put(log.getEndpoint(), 1);
-            }
+        ++countResponse;
+        fullResponseSize += log.getResponseSize();
 
-            String code = Integer.toString(log.getResponseCode());
-            if (responseCodeMap.containsKey(code)) {
-                responseCodeMap.put(code, responseCodeMap.get(code) + 1);
-            } else {
-                responseCodeMap.put(code, 1);
-            }
+        if (endpointMap.containsKey(log.getEndpoint())) {
+            endpointMap.put(log.getEndpoint(), endpointMap.get(log.getEndpoint()) + 1);
+        } else {
+            endpointMap.put(log.getEndpoint(), 1);
+        }
 
-            LocalDate date = log.getDateTime().toLocalDate();
-            if (requestsPerDayMap.containsKey(date)) {
-                requestsPerDayMap.put(date, requestsPerDayMap.get(date) + 1);
-            } else {
-                requestsPerDayMap.put(date, 1);
-            }
+        String code = Integer.toString(log.getResponseCode());
+        if (responseCodeMap.containsKey(code)) {
+            responseCodeMap.put(code, responseCodeMap.get(code) + 1);
+        } else {
+            responseCodeMap.put(code, 1);
+        }
 
-            if (httpUserAgent.containsKey(log.getUserAgent())) {
-                httpUserAgent.put(log.getUserAgent(), httpUserAgent.get(log.getUserAgent()) + 1);
-            } else {
-                httpUserAgent.put(log.getUserAgent(), 1);
-            }
+        LocalDate date = log.getDateTime().toLocalDate();
+        if (requestsPerDayMap.containsKey(date)) {
+            requestsPerDayMap.put(date, requestsPerDayMap.get(date) + 1);
+        } else {
+            requestsPerDayMap.put(date, 1);
+        }
 
-            if (tempFromDate == null) {
+        if (httpUserAgent.containsKey(log.getUserAgent())) {
+            httpUserAgent.put(log.getUserAgent(), httpUserAgent.get(log.getUserAgent()) + 1);
+        } else {
+            httpUserAgent.put(log.getUserAgent(), 1);
+        }
+
+        if (tempFromDate == null) {
+            tempFromDate = currDate;
+        } else {
+            if (currDate.isBefore(tempFromDate)) {
                 tempFromDate = currDate;
-            } else {
-                if (currDate.isBefore(tempFromDate)) {
-                    tempFromDate = currDate;
-                }
             }
-            if (tempToDate == null) {
+        }
+        if (tempToDate == null) {
+            tempToDate = currDate;
+        } else {
+            if (currDate.isAfter(tempToDate)) {
                 tempToDate = currDate;
-            } else {
-                if (currDate.isAfter(tempToDate)) {
-                    tempToDate = currDate;
-                }
             }
         }
     }

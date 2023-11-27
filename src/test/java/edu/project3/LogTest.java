@@ -3,9 +3,8 @@ package edu.project3;
 import edu.project3.log.LogAnalyzer;
 import edu.project3.log.LogEntry;
 import edu.project3.typeOfStatistic.TypeOutputFile;
-import java.io.IOException;
+import edu.project3.utils.CommandLineArg;
 import java.nio.file.Path;
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -20,7 +19,7 @@ import org.junit.jupiter.api.Test;
 public class LogTest {
     @Test
     @DisplayName("Поиск файлов '*.txt'")
-    void findFiles1() throws IOException {
+    void findFiles1() {
         LogAnalyzer logAnalyzer = new LogAnalyzer();
         List<Path> files = logAnalyzer.findFiles("*.txt");
         List<Path> trueFiles = new ArrayList<>();
@@ -32,7 +31,7 @@ public class LogTest {
 
     @Test
     @DisplayName("Поиск файлов '**.txt'")
-    void findFiles2() throws IOException {
+    void findFiles2() {
         LogAnalyzer logAnalyzer = new LogAnalyzer();
         List<Path> files = logAnalyzer.findFiles("**.txt");
         List<Path> trueFiles = new ArrayList<>();
@@ -47,7 +46,7 @@ public class LogTest {
 
     @Test
     @DisplayName("Поиск файлов '*/*.txt'")
-    void findFiles3() throws IOException {
+    void findFiles3() {
         LogAnalyzer logAnalyzer = new LogAnalyzer();
         List<Path> files = logAnalyzer.findFiles("*/*.txt");
         List<Path> trueFiles = new ArrayList<>();
@@ -60,7 +59,7 @@ public class LogTest {
 
     @Test
     @DisplayName("Создание log объектов")
-    void logEntry() throws ParseException {
+    void logEntry() {
         List<LogEntry> logs = new ArrayList<>();
         logs.add(new LogEntry(
             "54.84.191.5 - - [20/May/2015:06:05:00 +0000] \"GET /downloads/product_2 HTTP/1.1\" 304 0 \"-\" \"Debian APT-HTTP/1.3 (1.0.1ubuntu2)\""));
@@ -102,7 +101,7 @@ public class LogTest {
     void analyzeFile() {
         LogAnalyzer logAnalyzer = new LogAnalyzer();
         List<Path> file = new ArrayList<>(List.of(Path.of("src/test/resources/project3/testLogs.txt")));
-        logAnalyzer.analyzeFile(file, null, null, TypeOutputFile.MARKDOWN);
+        logAnalyzer.analyzeFile(file, new CommandLineArg(null, null, TypeOutputFile.MARKDOWN));
         Map<String, Integer> responseCodeMap = new HashMap<>();
         responseCodeMap.put("304", 4);
         responseCodeMap.put("200", 4);
