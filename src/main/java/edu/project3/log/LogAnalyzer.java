@@ -82,7 +82,7 @@ public class LogAnalyzer {
         }
 
         averageResponseSize = (fullResponseSize / countResponse);
-        setDate();
+        updateDateIfDateDefaultValue();
         writeStatistic(
             commandLineArg.getFormatOutput(),
             logFiles.stream().map(Path::toString).toList()
@@ -104,7 +104,7 @@ public class LogAnalyzer {
             analyzeLogLine(line);
         }
         averageResponseSize = (fullResponseSize / countResponse);
-        setDate();
+        updateDateIfDateDefaultValue();
         writeStatistic(
             commandLineArg.getFormatOutput(),
             Collections.singletonList(uri)
@@ -169,7 +169,7 @@ public class LogAnalyzer {
         }
     }
 
-    private void setDate() {
+    private void updateDateIfDateDefaultValue() {
         if (fromDate == fromDateDefault) {
             fromDate = tempFromDate;
         }
