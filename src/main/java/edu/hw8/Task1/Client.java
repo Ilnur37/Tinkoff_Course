@@ -28,7 +28,7 @@ public class Client {
             OutputStream outputStream = socket.getOutputStream();
             InputStream inputStream = socket.getInputStream();
             System.out.println("Ожидайте подключения");
-            String codeOfConnection = this.getResponse(inputStream);
+            String codeOfConnection = getResponse(inputStream);
             if (!codeOfConnection.equals("200")) {
                 return;
             }
@@ -44,7 +44,7 @@ public class Client {
                     break;
                 }
 
-                String response = this.getResponse(inputStream);
+                String response = getResponse(inputStream);
                 System.out.println("Ответ от сервера: " + response);
             }
         } catch (IOException e) {
