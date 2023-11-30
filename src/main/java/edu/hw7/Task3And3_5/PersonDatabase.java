@@ -4,7 +4,7 @@ import java.util.List;
 import lombok.NonNull;
 
 public interface PersonDatabase {
-    void add(@NonNull Person person);
+    void add(@NonNull Person person) throws InterruptedException;
 
     void delete(int id);
 

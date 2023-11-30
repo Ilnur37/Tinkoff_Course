@@ -12,9 +12,9 @@ import lombok.NonNull;
 
 public class PersonDBSynchronized implements PersonDatabase {
     private final Map<Integer, Person> persons = new HashMap<>();
-    private final Map<String, Set<Integer>> mapByName = new HashMap<>();
-    private final Map<String, Set<Integer>> mapByAddress = new HashMap<>();
-    private final Map<String, Set<Integer>> mapByPhone = new HashMap<>();
+    private final Map<String, Set<Integer>> personIdByName = new HashMap<>();
+    private final Map<String, Set<Integer>> personIdByAddress = new HashMap<>();
+    private final Map<String, Set<Integer>> personIdByPhone = new HashMap<>();
 
     @Override
     public void add(@NonNull Person person) {
@@ -28,25 +28,25 @@ public class PersonDBSynchronized implements PersonDatabase {
             persons.put(id, person);
 
             Set<Integer> tempSetName = new HashSet<>();
-            if (mapByName.containsKey(name)) {
-                tempSetName = mapByName.get(name);
+            if (personIdByName.containsKey(name)) {
+                tempSetName = personIdByName.get(name);
             }
             tempSetName.add(id);
-            mapByName.put(name, tempSetName);
+            personIdByName.put(name, tempSetName);
 
             Set<Integer> tempSetAddress = new HashSet<>();
-            if (mapByAddress.containsKey(address)) {
-                tempSetAddress = mapByAddress.get(address);
+            if (personIdByAddress.containsKey(address)) {
+                tempSetAddress = personIdByAddress.get(address);
             }
             tempSetAddress.add(id);
-            mapByAddress.put(address, tempSetAddress);
+            personIdByAddress.put(address, tempSetAddress);
 
             Set<Integer> tempSetPhone = new HashSet<>();
-            if (mapByPhone.containsKey(phone)) {
-                tempSetPhone = mapByPhone.get(phone);
+            if (personIdByPhone.containsKey(phone)) {
+                tempSetPhone = personIdByPhone.get(phone);
             }
             tempSetPhone.add(id);
-            mapByPhone.put(phone, tempSetPhone);
+            personIdByPhone.put(phone, tempSetPhone);
 
         }
 
@@ -62,22 +62,22 @@ public class PersonDBSynchronized implements PersonDatabase {
         String address = person.address();
         String phone = person.phoneNumber();
         persons.remove(id);
-        if (mapByName.containsKey(name)) {
-            mapByName.get(name).remove(id);
-            if (mapByName.get(name).size() == 0) {
-                mapByName.remove(name);
+        if (personIdByName.containsKey(name)) {
+            personIdByName.get(name).remove(id);
+            if (personIdByName.get(name).size() == 0) {
+                personIdByName.remove(name);
             }
         }
-        if (mapByAddress.containsKey(address)) {
-            mapByAddress.get(address).remove(id);
-            if (mapByAddress.get(address).size() == 0) {
-                mapByAddress.remove(address);
+        if (personIdByAddress.containsKey(address)) {
+            personIdByAddress.get(address).remove(id);
+            if (personIdByAddress.get(address).size() == 0) {
+                personIdByAddress.remove(address);
             }
         }
-        if (mapByPhone.containsKey(phone)) {
-            mapByPhone.get(phone).remove(id);
-            if (mapByPhone.get(phone).size() == 0) {
-                mapByPhone.remove(phone);
+        if (personIdByPhone.containsKey(phone)) {
+            personIdByPhone.get(phone).remove(id);
+            if (personIdByPhone.get(phone).size() == 0) {
+                personIdByPhone.remove(phone);
             }
         }
 
@@ -85,20 +85,20 @@ public class PersonDBSynchronized implements PersonDatabase {
 
     @Override
     public synchronized List<Person> findByName(@NonNull String name) {
-        if (!mapByName.containsKey(name)) {
+        if (!personIdByName.containsKey(name)) {
             return Collections.emptyList();
         }
-        return mapByName.get(name).stream()
+        return personIdByName.get(name).stream()
             .map(persons::get)
             .toList();
     }
 
     @Override
     public synchronized List<Person> findByAddress(@NonNull String address) {
-        if (!mapByAddress.containsKey(address)) {
+        if (!personIdByAddress.containsKey(address)) {
             return Collections.emptyList();
         }
-        return mapByAddress.get(address).stream()
+        return personIdByAddress.get(address).stream()
             .map(persons::get)
             .toList();
 
@@ -106,21 +106,16 @@ public class PersonDBSynchronized implements PersonDatabase {
 
     @Override
     public synchronized List<Person> findByPhone(@NonNull String phone) {
-        if (!mapByPhone.containsKey(phone)) {
+        if (!personIdByPhone.containsKey(phone)) {
             return Collections.emptyList();
         }
-        return mapByPhone.get(phone).stream()
+        return personIdByPhone.get(phone).stream()
             .map(persons::get)
             .toList();
 
     }
 
     private void validatePerson(Person person) {
-        if (person.name() == null
-            || person.address() == null
-            || person.phoneNumber() == null) {
-            throw new IllegalArgumentException("Parameters of person can not be null!");
-        }
         if (persons.containsKey(person.id())) {
             throw new IllegalArgumentException("Person with this ID already exists!");
         }

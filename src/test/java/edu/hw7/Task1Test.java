@@ -2,11 +2,12 @@ package edu.hw7;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import java.util.concurrent.ExecutionException;
 
 public class Task1Test {
 
     @Test
-    public void testCounter1() throws InterruptedException {
+    public void testCounter1() throws InterruptedException, ExecutionException {
         final int threads = 1000;
         final int increments = 10000;
         Task1 task1 = new Task1();
@@ -17,14 +18,36 @@ public class Task1Test {
     }
 
     @Test
-    public void testCounter_whenZeroThreads() throws InterruptedException {
-        final int threads = 0;
-        final int increments = 50000;
+    public void testCounter2() throws InterruptedException, ExecutionException {
+        final int threads = 2;
+        final int increments = 10000;
         Task1 task1 = new Task1();
         task1.counter(threads, increments);
         int res = task1.getCount();
 
         Assertions.assertEquals(threads * increments, res);
+    }
+
+    @Test
+    public void testCounter3() throws InterruptedException, ExecutionException {
+        final int threads = 3;
+        final int increments = 10000;
+        Task1 task1 = new Task1();
+        task1.counter(threads, increments);
+        int res = task1.getCount();
+
+        Assertions.assertEquals(threads * increments, res);
+    }
+
+    @Test
+    public void testCounter_whenZeroThreads() {
+        final int threads = 0;
+        final int increments = 50000;
+        Task1 task1 = new Task1();
+        IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            task1.counter(threads, increments);
+        }, "Arguments is valid");
+        Assertions.assertEquals("Arguments can not be negative!", thrown.getMessage());
     }
 
     @Test

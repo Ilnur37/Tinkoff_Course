@@ -24,13 +24,13 @@ public class Task3_5Test {
                     for (int j = 0; j < 100; j += 2) {
                         int tempCount = 0;
                         synchronized (personDB) {
-                            if (personDB.findByName("a" + j).size() == 0) {
+                            if (personDB.findByName("a" + j).isEmpty()) {
                                 ++tempCount;
                             }
-                            if (personDB.findByAddress("a" + j).size() == 0) {
+                            if (personDB.findByAddress("a" + j).isEmpty()) {
                                 ++tempCount;
                             }
-                            if (personDB.findByPhone("a" + j).size() == 0) {
+                            if (personDB.findByPhone("a" + j).isEmpty()) {
                                 ++tempCount;
                             }
                             if (tempCount == 1 || tempCount == 2) {
