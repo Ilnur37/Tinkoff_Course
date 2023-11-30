@@ -2,18 +2,19 @@ package edu.hw8.Task3;
 
 import java.util.HashMap;
 import java.util.Map;
-import lombok.NonNull;
+import java.util.concurrent.ExecutionException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
 public interface PasswordDecoder {
     int DICTIONARY_POWER = 62;
     Logger LOGGER = LogManager.getLogger();
     Map<String, String> PASSWORD_BY_USER = new HashMap<>();
 
-    void encodePasswordArray(@NonNull Map<String, String> users);
+    void encodePasswordArray(@NotNull Map<String, String> users);
 
-    void decodePassword(int maxLength);
+    void decodePassword(int maxLength) throws InterruptedException, ExecutionException;
 
     @SuppressWarnings("MagicNumber")
     default char getChar(int index) {

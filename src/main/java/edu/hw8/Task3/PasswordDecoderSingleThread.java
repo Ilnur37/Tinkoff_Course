@@ -10,22 +10,21 @@ import org.jetbrains.annotations.NotNull;
 @Getter
 @NoArgsConstructor
 public class PasswordDecoderSingleThread implements PasswordDecoder {
-    private final Map<String, String> userByEncodePasse = new HashMap<>();
     private final Map<String, String> decodePassByUser = new HashMap<>();
+    private final Map<String, String> userByEncodePass = new HashMap<>();
 
     @Override
     public void encodePasswordArray(@NotNull Map<String, String> users) {
         PASSWORD_BY_USER.putAll(users);
         for (Map.Entry<String, String> user : users.entrySet()) {
-            userByEncodePasse.put(Arrays.toString(Encoder.encodeMD5(user.getValue())), user.getKey());
+            userByEncodePass.put(Arrays.toString(Encoder.encodeMD5(user.getValue())), user.getKey());
         }
     }
 
     @Override
     @SuppressWarnings("ReturnCount")
     public void decodePassword(int maxLength) {
-        long startTime = System.currentTimeMillis();
-        if (userByEncodePasse.isEmpty()) {
+        if (userByEncodePass.isEmpty()) {
             return;
         }
         for (int wordLength = 1; wordLength <= maxLength; wordLength++) {
@@ -44,15 +43,12 @@ public class PasswordDecoderSingleThread implements PasswordDecoder {
 
                 String pass = word.reverse().toString();
                 String encodePass = Arrays.toString(Encoder.encodeMD5(pass));
-                if (userByEncodePasse.containsKey(encodePass)) {
-                    String user = userByEncodePasse.get(encodePass);
+                if (userByEncodePass.containsKey(encodePass)) {
+                    String user = userByEncodePass.get(encodePass);
                     LOGGER.info("Найден пароль " + pass + "(MD5 {byte[]: " + encodePass + "}. Аккаунт " + user);
                     decodePassByUser.put(user, pass);
-                    userByEncodePasse.remove(encodePass);
-                    if (userByEncodePasse.isEmpty()) {
-                        long finishTime = System.currentTimeMillis();
-                        long elapsed = finishTime - startTime;
-                        System.out.println("Прошло времени, мс: " + elapsed);
+                    userByEncodePass.remove(encodePass);
+                    if (userByEncodePass.isEmpty()) {
                         return;
                     }
                 }

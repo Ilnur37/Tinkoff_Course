@@ -10,20 +10,20 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import lombok.Getter;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 
 public class PasswordDecoderMultiThread implements PasswordDecoder {
     private final int threads;
-    private final Map<String, String> userByEncodePass = new ConcurrentHashMap<>();
+    private final ExecutorService executorService;
+    @Getter
     private final Map<String, String> decodePassByUser = new ConcurrentHashMap<>();
+    private final Map<String, String> userByEncodePass = new ConcurrentHashMap<>();
 
     public PasswordDecoderMultiThread(int threads) {
         this.threads = threads;
-    }
-
-    public Map<String, String> getDecodePassByUser() {
-        return decodePassByUser;
+        this.executorService = Executors.newFixedThreadPool(threads);
     }
 
     @Override
@@ -38,25 +38,18 @@ public class PasswordDecoderMultiThread implements PasswordDecoder {
     @SuppressWarnings("ReturnCount")
     @SneakyThrows({InterruptedException.class, ExecutionException.class})
     public void decodePassword(int maxLength) {
-        long startTime = System.currentTimeMillis();
         if (userByEncodePass.isEmpty()) {
             return;
         }
         for (int wordLength = 1; wordLength <= maxLength; wordLength++) {
             List<Callable<Void>> tasks = createTasks(wordLength);
-            ExecutorService executorService = Executors.newFixedThreadPool(threads);
             List<Future<Void>> futures = executorService.invokeAll(tasks);
 
             for (var future : futures) {
                 future.get();
             }
-
             if (userByEncodePass.isEmpty()) {
-                executorService.shutdownNow();
-                //executorService.shutdown();
-                long finishTime = System.currentTimeMillis();
-                long elapsed = finishTime - startTime;
-                System.out.println("Прошло времени, мс: " + elapsed);
+                executorService.shutdown();
                 return;
             }
         }
@@ -99,7 +92,6 @@ public class PasswordDecoderMultiThread implements PasswordDecoder {
 
             String pass = word.reverse().toString();
             String encodePass = Arrays.toString(Encoder.encodeMD5(pass));
-            System.out.println(word);
             if (userByEncodePass.containsKey(encodePass)) {
                 String user = userByEncodePass.get(encodePass);
                 LOGGER.info("Найден пароль " + pass + "(MD5 {byte[]: " + encodePass + "}. Аккаунт " + user);
@@ -107,7 +99,6 @@ public class PasswordDecoderMultiThread implements PasswordDecoder {
                 decodePassByUser.put(user, pass);
             }
             if (userByEncodePass.isEmpty()) {
-                System.out.println("empty");
                 return;
             }
         }

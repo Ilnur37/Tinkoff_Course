@@ -33,7 +33,6 @@ public final class Server {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     static {
