@@ -4,6 +4,7 @@ import edu.project4.Pixel;
 import edu.project4.Point;
 import edu.project4.Rect;
 import edu.project4.image.FractalImage;
+import java.util.concurrent.ThreadLocalRandom;
 
 public interface Renderer {
     default FractalImage render(
@@ -26,15 +27,32 @@ public interface Renderer {
 
             for (short step = 0; step < iterPerSample; ++step) {
                 //Transformation variation = random(variations, ...);
-                //double[] transforms = createTransforms();
-                double[] transforms = {0.2, -1.26, 0.223, 0.2422, 0, 1.23};
+                double[] transforms = createTransforms();
+                //double[] transforms = {0.2, -1.26, 0.223, 0.2422, 0, 1.23};
                 double xNew = transforms[0] * pw.x() + transforms[1] * pw.y() + transforms[2];
                 double yNew = transforms[3] * pw.x() + transforms[4] * pw.y() + transforms[5];
-                Transformation variation = point -> {
-                    double denominator = (1.0 / (xNew * xNew) + (yNew * yNew));
-                    return new Point(xNew * denominator, yNew * denominator);
-                };
+                Transformation variation = null;
+                int randomT = ThreadLocalRandom.current().nextInt(4);
+                //int randomT = 1;
+                switch (randomT) {
+                    case 0:
+                        variation = point -> new Point(xNew, yNew);
+                    case 1:
+                        variation = point -> {
+                            double denominator = (1.0 / (xNew * xNew) + (yNew * yNew));
+                            return new Point(xNew * denominator, yNew * denominator);
+                        };
+                    case 2:
+                        variation = point -> new Point(Math.sin(xNew), Math.sin(yNew));
+                    case 3:
+                        variation = point -> {
+                            double r = xNew * xNew + yNew * yNew;
+                            return new Point(xNew * Math.sin(r) - yNew * Math.cos(r), xNew * Math.sin(r) + yNew * Math.cos(r));
+                        };
+                }
+
                 Point newPoint = variation.apply(pw);
+                //Point newPoint = new Point(xNew, yNew);
 
                 double theta2 = 0.0;
                 int symmetry = 1;
@@ -44,9 +62,10 @@ public interface Renderer {
                         && pwr.y() >= yMin && pwr.y() <= yMax)) {
                         continue;
                     }
-                    int x = (int) (xImage - (((xMax - pwr.x()) / xMax - xMin) * xImage));
-                    int y = (int) (yImage - (((yMax - pwr.y()) / yMax - yMin) * yImage));
+                    int x = (xImage - (int) (((xMax - pwr.x()) / (xMax - xMin)) * xImage));
+                    int y = (yImage - (int) (((yMax - pwr.y()) / (yMax - yMin)) * yImage));
                     //fractal->xres - (unsigned int) (((fractal->xmax - x_rot) / fractal->ranx) * fractal->xres);
+
                     if (!(x >= 0 && x < xImage
                         && y >= 0 && y < yImage)) {
                         continue;

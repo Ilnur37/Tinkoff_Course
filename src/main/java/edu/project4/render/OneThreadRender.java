@@ -9,9 +9,9 @@ public class OneThreadRender implements Renderer {
     public Point randomPoint(Rect world) {
         //((lo) + (((hi)-(lo)) * drand48()))
         //double x = ThreadLocalRandom.current().nextDouble(0, 3.44);
-        double x = ((1.77 - (-1.77)) * ThreadLocalRandom.current().nextDouble());
+        double x =  -1.77 + ((1.77 - (-1.77)) * ThreadLocalRandom.current().nextDouble());
         //double y = ThreadLocalRandom.current().nextDouble(0, 3.44);
-        double y = ((1 - (-1)) * ThreadLocalRandom.current().nextDouble());
+        double y = -1 + ((1 - (-1)) * ThreadLocalRandom.current().nextDouble());
         return new Point(x, y);
     }
 
