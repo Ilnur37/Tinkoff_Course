@@ -40,7 +40,7 @@ public class OneThreadRender implements Renderer {
 
                 int randomTrans2 = ThreadLocalRandom.current().nextInt(nonlinearTrans.size());
                 Point newPoint = nonlinearTrans.get(randomTrans2).apply(affinePoint);
-
+                //Point newPoint = affinePoint;
                 double theta2 = 0.0;
                 int symmetry = 1;
                 for (int s = 0; s < symmetry; theta2 += Math.PI * 2 / symmetry, ++s) {
@@ -96,7 +96,7 @@ public class OneThreadRender implements Renderer {
                 if (pixel == null) {
                     continue;
                 }
-                double newHitC = Math.log(pixel.hitCount());
+                double newHitC = Math.log10(pixel.hitCount());
                 newHitC = newHitC / (max);
                 double multi = Math.pow(newHitC, (1 / gamma));
                 int newRed = (int) (pixel.r() * multi);

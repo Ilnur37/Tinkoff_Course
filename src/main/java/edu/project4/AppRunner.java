@@ -12,15 +12,15 @@ import java.util.List;
 public class AppRunner {
     public static void main(String[] args) {
         OneThreadRender oneThreadRender = new OneThreadRender();
-        int width = 2200;
-        int height = 1350;
+        int width = 2560;
+        int height = 1440;
         FractalImage fractalImage = FractalImage.create(width, height);
-        List<String> names = new ArrayList<>(List.of("heart", "spiral", "spiral"));
-        short num = 3;
-        int samples = 50000;
+        List<String> names = new ArrayList<>(List.of("heart", "hyperbolic"));
+        short num = 2;
+        int samples = 150000;
         short iterPerSample = 2000;
         List<AffineTransformation> transforms = new ArrayList<>();
-        for (int i = 0; i < 25; i++) {
+        for (int i = 0; i < 20; i++) {
             transforms.add(new AffineTransformation());
         }
 

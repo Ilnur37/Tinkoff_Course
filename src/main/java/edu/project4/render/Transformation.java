@@ -110,9 +110,6 @@ public class Transformation {
                 "The number of requested transformations is greater than the number of implemented ones!"
             );
         }
-        if (numberOfTrans < 1) {
-            numberOfTrans = DEFAULT_NUMBER_OF_TRANS;
-        }
         List<NonlinearTransformation> tempListTrans = new ArrayList<>(NONLINEAR_TRANSFORMATION.values());
         for (int i = 0; i < numberOfTrans; i++) {
             int idx = ThreadLocalRandom.current().nextInt(numberOfTrans);
