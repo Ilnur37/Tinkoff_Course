@@ -13,8 +13,8 @@ import org.apache.logging.log4j.Logger;
 public class Client {
     private final String serverAddress;
     private final int serverPort;
-    private static final String endOfProgram = "END";
-    private static final int byteCapacity = 1024;
+    private static final String END_OF_PROGRAM = "END";
+    private static final int BYTE_CAPACITY = 1024;
     private static final Logger LOGGER = LogManager.getLogger();
 
     public void start() {
@@ -36,7 +36,7 @@ public class Client {
                 Scanner scanner = new Scanner(System.in);
                 String keyword = scanner.nextLine();
                 outputStream.write(keyword.getBytes());
-                if (keyword.equals(endOfProgram)) {
+                if (keyword.equals(END_OF_PROGRAM)) {
                     break;
                 }
 
@@ -49,7 +49,7 @@ public class Client {
     }
 
     private String getResponse(InputStream inputStream) throws IOException {
-        byte[] buffer = new byte[byteCapacity];
+        byte[] buffer = new byte[BYTE_CAPACITY];
         int bytesRead = inputStream.read(buffer);
         return new String(buffer, 0, bytesRead);
     }
