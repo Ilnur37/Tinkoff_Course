@@ -9,31 +9,21 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import lombok.experimental.UtilityClass;
+import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-@UtilityClass
+@RequiredArgsConstructor
 public final class Server {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final Map<String, String> DICTIONARY_RESPONSE = new HashMap();
     private static final String DEFAULT_RESPONSE = "Цитата: Я не знаю, что ответить.";
     private static final String END_OF_PROGRAM = "END";
     private static final int BYTE_CAPACITY = 1024;
-
-    public static void start(int port, int maxConnections) {
-        ExecutorService executorService = Executors.newFixedThreadPool(maxConnections);
-        try (ServerSocket serverSocket = new ServerSocket(port)) {
-
-            LOGGER.info("Сервер запущен. Ожидание подключений...");
-
-            while (true) {
-                executorService.submit(new ClientHandler(serverSocket.accept()));
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+    private static final int MAX_CONNECTIONS = 1;
+    private final ExecutorService executorService = Executors.newFixedThreadPool(MAX_CONNECTIONS);
+    private final int port;
 
     static {
         DICTIONARY_RESPONSE.put("личности", "Не переходи на личности там, где их нет");
@@ -48,12 +38,20 @@ public final class Server {
         );
     }
 
-    private record ClientHandler(Socket clientSocket) implements Runnable {
+    @SneakyThrows(IOException.class)
+    public void start() {
+        ServerSocket serverSocket = new ServerSocket(port);
+        LOGGER.info(String.format("Сервер запущен на порте %d. Ожидание подключений...", port));
+        while (true) {
+            executorService.submit(new ClientHandler(serverSocket.accept()));
+        }
+    }
 
+    private record ClientHandler(Socket clientSocket) implements Runnable {
         public void run() {
             try (InputStream inputStream = clientSocket.getInputStream();
                  OutputStream outputStream = clientSocket.getOutputStream()) {
-                Server.LOGGER.info("Подключен клиент: " + clientSocket);
+                Server.LOGGER.info(String.format("Подключен клиент: %s", clientSocket));
                 outputStream.write("200".getBytes());
 
                 while (true) {

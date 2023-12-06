@@ -5,38 +5,34 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.util.Scanner;
+import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+@RequiredArgsConstructor
 public class Client {
     private final String serverAddress;
     private final int serverPort;
-    private final String endOfProgram = "END";
-    private final int byteCapacity = 1024;
+    private static final String endOfProgram = "END";
+    private static final int byteCapacity = 1024;
+    private static final Logger LOGGER = LogManager.getLogger();
 
-    public Client(String serverAddress, int serverPort) {
-        this.serverAddress = serverAddress;
-        this.serverPort = serverPort;
-    }
-
-    public void main(String[] args) {
-        this.start();
-    }
-
-    @SuppressWarnings("RegexpSinglelineJava")
     public void start() {
         try (Socket socket = new Socket(this.serverAddress, this.serverPort)) {
 
             OutputStream outputStream = socket.getOutputStream();
             InputStream inputStream = socket.getInputStream();
-            System.out.println("Ожидайте подключения");
+            LOGGER.info("Ожидайте подключения");
             String codeOfConnection = getResponse(inputStream);
             if (!codeOfConnection.equals("200")) {
-                return;
+                LOGGER.info("Подколючение невозможно");
+                throw new RuntimeException("Server returned unknown value!");
             }
 
-            System.out.println("Соединение установлено. Для отключения введитe 'END'");
+            LOGGER.info("Соединение установлено. Для отключения введитe 'END'");
 
             while (true) {
-                System.out.println("Введите ключевое слово: ");
+                LOGGER.info("Введите ключевое слово: ");
                 Scanner scanner = new Scanner(System.in);
                 String keyword = scanner.nextLine();
                 outputStream.write(keyword.getBytes());
@@ -45,7 +41,7 @@ public class Client {
                 }
 
                 String response = getResponse(inputStream);
-                System.out.println("Ответ от сервера: " + response);
+                LOGGER.info("Ответ от сервера: " + response);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
