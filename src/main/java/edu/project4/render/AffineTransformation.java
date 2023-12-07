@@ -8,6 +8,8 @@ public class AffineTransformation {
     public final int red;
     public final int green;
     public final int blue;
+    public static final double MIN_DEFAULT = -1.5;
+    public static final double MAX_DEFAULT = 1.5;
 
     public AffineTransformation() {
         this.affine = createTransforms();
@@ -17,42 +19,46 @@ public class AffineTransformation {
     }
 
     public double[] createTransforms() {
-        double a, b, d, e;
-        do {
+        double a;
+        double b;
+        double c;
+        double d;
+        double e;
+        double f;
+        if (ThreadLocalRandom.current().nextBoolean()) {
             do {
-                a = ThreadLocalRandom.current().nextDouble(-1, 1);
-                d = ThreadLocalRandom.current().nextDouble(a * a * (a / Math.abs(a)), 1);
-                /*a = ThreadLocalRandom.current().nextDouble();
-                d = ThreadLocalRandom.current().nextDouble(a * a, 1);*/
-                if (ThreadLocalRandom.current().nextInt() == 0) {
-                    d = -d;
+                do {
+                    a = ThreadLocalRandom.current().nextDouble(-1, 1);
+                    d = ThreadLocalRandom.current().nextDouble(a * a * (a / Math.abs(a)), 1);
+                    if (ThreadLocalRandom.current().nextBoolean()) {
+                        d = -d;
+                    }
                 }
-            }
-            while ((a * a + d * d) > 1);
-            do {
-                b = ThreadLocalRandom.current().nextDouble(-1,1);
-                e = ThreadLocalRandom.current().nextDouble(b * b * (b / Math.abs(b)), 1);
-               /* b = ThreadLocalRandom.current().nextDouble();
-                e = ThreadLocalRandom.current().nextDouble(b * b, 1);*/
-                if (ThreadLocalRandom.current().nextInt() == 0) {
-                    e = -e;
+                while ((a * a + d * d) > 1);
+                do {
+                    b = ThreadLocalRandom.current().nextDouble(-1, 1);
+                    e = ThreadLocalRandom.current().nextDouble(b * b * (b / Math.abs(b)), 1);
+                    if (ThreadLocalRandom.current().nextBoolean()) {
+                        e = -e;
+                    }
                 }
+                while ((b * b + e * e) > 1);
             }
-            while ((b * b + e * e) > 1);
+            while ((a * a + b * b + d * d + e * e) > (1 + (a * e - d * b) * (a * e - d * b)));
+            c = ThreadLocalRandom.current().nextDouble(-1, 1);
+            f = ThreadLocalRandom.current().nextDouble(-1, 1);
+        } else {
+            a = ThreadLocalRandom.current().nextDouble(MIN_DEFAULT, MAX_DEFAULT);
+            b = ThreadLocalRandom.current().nextDouble(MIN_DEFAULT, MAX_DEFAULT);
+            d = ThreadLocalRandom.current().nextDouble(MIN_DEFAULT, MAX_DEFAULT);
+            e = ThreadLocalRandom.current().nextDouble(MIN_DEFAULT, MAX_DEFAULT);
+            c = ThreadLocalRandom.current().nextDouble(MIN_DEFAULT, MAX_DEFAULT);
+            f = ThreadLocalRandom.current().nextDouble(MIN_DEFAULT, MAX_DEFAULT);
         }
-        while ((a * a + b * b + d * d + e * e) > (1 + (a * e - d * b) * (a * e - d * b)));
 
         return new double[] {
-            a, b, ThreadLocalRandom.current().nextDouble(-2, 2),
-            d, e, ThreadLocalRandom.current().nextDouble(-2, 2)
-            /*Math.random(), Math.random(), Math.random(),
-            Math.random(), Math.random(), Math.random()*/
-            /*ThreadLocalRandom.current().nextDouble(-1, 1),
-            ThreadLocalRandom.current().nextDouble(-1, 1),
-            ThreadLocalRandom.current().nextDouble(-1, 1),
-            ThreadLocalRandom.current().nextDouble(-1, 1),
-            ThreadLocalRandom.current().nextDouble(),
-            ThreadLocalRandom.current().nextDouble(),*/
+            a, b, c,
+            d, e, f
         };
     }
 }

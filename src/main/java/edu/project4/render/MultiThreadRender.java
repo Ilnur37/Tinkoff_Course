@@ -3,14 +3,33 @@ package edu.project4.render;
 import edu.project4.Pixel;
 import edu.project4.Point;
 import edu.project4.image.FractalImage;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.stream.Stream;
+import lombok.SneakyThrows;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
-public class OneThreadRender implements Renderer {
+public class MultiThreadRender implements Renderer {
     private final static Logger LOGGER = LogManager.getLogger();
+    private static final ReadWriteLock LOCK = new ReentrantReadWriteLock();
+    private static final Lock READ_LOCK = LOCK.readLock();
+    private static final Lock WRITE_LOCK = LOCK.writeLock();
+    private static final int WAITING_TIME = 200;
+    private int xImage;
+    private int yImage;
+
     @Override
+    @SneakyThrows({ExecutionException.class, InterruptedException.class})
     public FractalImage render(
         FractalImage canvas,
         List<AffineTransformation> transforms,
@@ -20,14 +39,50 @@ public class OneThreadRender implements Renderer {
         short iterPerSample,
         int symmetry
     ) {
-        int xImage = canvas.width();
-        int yImage = canvas.height();
+        xImage = canvas.width();
+        yImage = canvas.height();
 
         List<String> nonlinearTrans = Transformation.getTransformations(namesOfTrans, numberOfTrans);
         System.out.println(nonlinearTrans);
 
+        int cores = 5;
+        int samplesInThread = samples / cores;
+        ExecutorService executorService = Executors.newFixedThreadPool(cores);
+        Callable<FractalImage> workers = () -> {
+            worker(canvas, transforms, nonlinearTrans, samplesInThread, iterPerSample, symmetry);
+            return null;
+        };
+        var tasks = Stream.generate(() -> workers).limit(cores).toList();
+        List<Future<FractalImage>> futures = executorService.invokeAll(tasks);
+        List<FractalImage> fractalImages = new ArrayList<>();
+        if (cores * samplesInThread != samples) {
+            fractalImages.add(worker(
+                canvas,
+                transforms,
+                nonlinearTrans,
+                samples - cores * samplesInThread,
+                iterPerSample,
+                symmetry
+            ));
+        }
+        for (var future : futures) {
+            fractalImages.add(future.get());
+        }
+        executorService.shutdown();
+        return canvas;
+    }
+
+    //@SneakyThrows(InterruptedException.class)
+    private FractalImage worker(
+        FractalImage canvas,
+        List<AffineTransformation> transforms,
+        List<String> nonlinearTrans,
+        int samples,
+        short iterPerSample,
+        int symmetry
+    ) {
         for (int num = 0; num < samples; ++num) {
-            if (num % 5000 == 0) {
+            if (num % 1000 == 0) {
                 LOGGER.info("num = " + num);
             }
             Point firstPoint = randomPoint();
@@ -54,7 +109,10 @@ public class OneThreadRender implements Renderer {
                             && y >= 0 && y < yImage)) {
                             continue;
                         }
-                        Pixel pixel = canvas.getPixel(x, y);
+
+                        Pixel pixel = null;
+                        pixel = canvas.getPixel(x, y);
+
                         if (pixel == null) {
                             pixel = new Pixel(affineTrans.red, affineTrans.green, affineTrans.blue, 1);
                         } else {
@@ -65,7 +123,9 @@ public class OneThreadRender implements Renderer {
                                 pixel.hitCount() + 1
                             );
                         }
+
                         canvas.addPixel(x, y, pixel);
+
                     }
                 }
             }

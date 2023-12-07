@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
+import lombok.experimental.UtilityClass;
 import static java.lang.Math.PI;
 import static java.lang.Math.atan2;
 import static java.lang.Math.cos;
@@ -14,9 +15,9 @@ import static java.lang.Math.pow;
 import static java.lang.Math.sin;
 import static java.lang.Math.sqrt;
 
+@UtilityClass
 public class Transformation {
-    public static final Map<String, NonlinearTransformation> NONLINEAR_TRANSFORMATION = new HashMap<>();
-    public static final int DEFAULT_NUMBER_OF_TRANS = 5;
+    private static final Map<String, NonlinearTransformation> NONLINEAR_TRANSFORMATION = new HashMap<>();
 
     static {
         NONLINEAR_TRANSFORMATION.put("linear", point -> new Point(point.x(), point.y()));
@@ -95,12 +96,49 @@ public class Transformation {
         });
     }
 
-    public static List<NonlinearTransformation> getTransformations(List<String> namesTrans, int numberOfTrans) {
+    public static List<String> getTransformations(List<String> namesTrans, int number) {
+        int numberOfTrans = number;
+        List<String> listTrans = new ArrayList<>();
+        List<String> tempListTrans = new ArrayList<>(NONLINEAR_TRANSFORMATION.keySet());
+        if (!namesTrans.isEmpty()) {
+            namesTrans.forEach(name -> {
+                if (tempListTrans.contains(name)) {
+                    listTrans.add(name);
+                    tempListTrans.remove(name);
+                }
+            });
+            numberOfTrans -= listTrans.size();
+        }
+        if (numberOfTrans > tempListTrans.size()) {
+            throw new IllegalArgumentException(
+                "The number of requested transformations is greater than the number of implemented ones!"
+            );
+        }
+        while (numberOfTrans > 0) {
+            int idx = ThreadLocalRandom.current().nextInt(tempListTrans.size());
+            listTrans.add(tempListTrans.get(idx));
+            tempListTrans.remove(idx);
+            --numberOfTrans;
+        }
+
+        if (listTrans.isEmpty()) {
+            throw new IllegalArgumentException(
+                "The list of transformations is empty, incorrect parameters have been entered!"
+            );
+        }
+        return listTrans;
+    }
+
+    public static NonlinearTransformation getFunction(String name) {
+        return NONLINEAR_TRANSFORMATION.get(name);
+    }
+
+   /* public static List<NonlinearTransformation> getTransformations(List<String> namesTrans, int numberOfTrans) {
         List<NonlinearTransformation> listTrans = new ArrayList<>();
         if (!namesTrans.isEmpty()) {
             namesTrans.forEach(name -> {
                 if (NONLINEAR_TRANSFORMATION.get(name) != null) {
-                    listTrans.add(NONLINEAR_TRANSFORMATION.get(name));;
+                    listTrans.add(NONLINEAR_TRANSFORMATION.get(name));
                 }
             });
             numberOfTrans -= listTrans.size();
@@ -124,5 +162,5 @@ public class Transformation {
             );
         }
         return listTrans;
-    }
+    }*/
 }
