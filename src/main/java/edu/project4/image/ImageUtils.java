@@ -22,7 +22,7 @@ public final class ImageUtils {
                 if (pixel == null) {
                     continue;
                 } else {
-                    rgb = (pixel.r() << 16) | (pixel.g() << 8) | pixel.b();
+                    rgb = ((int) pixel.r() << 16) | ((int) pixel.g() << 8) | (int) pixel.b();
                 }
                 bufferedImage.setRGB(x, y, rgb);
             }

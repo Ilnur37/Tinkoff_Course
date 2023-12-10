@@ -8,8 +8,8 @@ public class AffineTransformation {
     public final int red;
     public final int green;
     public final int blue;
-    public static final double MIN_DEFAULT = -1.5;
-    public static final double MAX_DEFAULT = 1.5;
+    private static final double MIN_DEFAULT = -1.5;
+    private static final double MAX_DEFAULT = 1.5;
 
     public AffineTransformation() {
         this.affine = createTransforms();

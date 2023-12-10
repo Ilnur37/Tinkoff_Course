@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
+import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 import static java.lang.Math.PI;
 import static java.lang.Math.atan2;
@@ -16,6 +17,7 @@ import static java.lang.Math.sin;
 import static java.lang.Math.sqrt;
 
 @UtilityClass
+@SuppressWarnings("MagicNumber")
 public class Transformation {
     private static final Map<String, NonlinearTransformation> NONLINEAR_TRANSFORMATION = new HashMap<>();
 
@@ -96,7 +98,7 @@ public class Transformation {
         });
     }
 
-    public static List<String> getTransformations(List<String> namesTrans, int number) {
+    public static List<String> getTransformations(@NonNull List<String> namesTrans, int number) {
         int numberOfTrans = number;
         List<String> listTrans = new ArrayList<>();
         List<String> tempListTrans = new ArrayList<>(NONLINEAR_TRANSFORMATION.keySet());
@@ -132,35 +134,4 @@ public class Transformation {
     public static NonlinearTransformation getFunction(String name) {
         return NONLINEAR_TRANSFORMATION.get(name);
     }
-
-   /* public static List<NonlinearTransformation> getTransformations(List<String> namesTrans, int numberOfTrans) {
-        List<NonlinearTransformation> listTrans = new ArrayList<>();
-        if (!namesTrans.isEmpty()) {
-            namesTrans.forEach(name -> {
-                if (NONLINEAR_TRANSFORMATION.get(name) != null) {
-                    listTrans.add(NONLINEAR_TRANSFORMATION.get(name));
-                }
-            });
-            numberOfTrans -= listTrans.size();
-        }
-        if (numberOfTrans > NONLINEAR_TRANSFORMATION.size()) {
-            throw new IllegalArgumentException(
-                "The number of requested transformations is greater than the number of implemented ones!"
-            );
-        }
-        List<NonlinearTransformation> tempListTrans = new ArrayList<>(NONLINEAR_TRANSFORMATION.values());
-        for (int i = 0; i < numberOfTrans; i++) {
-            int idx = ThreadLocalRandom.current().nextInt(numberOfTrans);
-            listTrans.add(tempListTrans.get(idx));
-            tempListTrans.remove(idx);
-            --numberOfTrans;
-        }
-
-        if (listTrans.isEmpty()) {
-            throw new IllegalArgumentException(
-                "The list of transformations is empty, incorrect parameters have been entered!"
-            );
-        }
-        return listTrans;
-    }*/
 }
