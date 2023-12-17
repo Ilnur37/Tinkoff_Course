@@ -1,8 +1,6 @@
 package edu.hw11.Task3;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
-import net.bytebuddy.ByteBuddy;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
