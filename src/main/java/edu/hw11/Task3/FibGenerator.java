@@ -15,10 +15,10 @@ public class FibGenerator {
     }
 
     public static void main(String[] args) throws IOException {
-        generateAndSaveClass("FibonacciClass");
+        //generateAndSaveClass("FibonacciClass");
     }
 
-    public static void generateAndSaveClass(String className) throws IOException {
+    /*public static void generateAndSaveClass(String className) throws IOException {
         new ByteBuddy()
             .subclass(Object.class)
             .name(className)
@@ -30,7 +30,7 @@ public class FibGenerator {
         try (FileOutputStream fos = new FileOutputStream(className + ".class")) {
             fos.write(byteCode);
         }
-    }
+    }*/
 
     /*private static ByteCodeAppender FibonacciMethod() {
 
